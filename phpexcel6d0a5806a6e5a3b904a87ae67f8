@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <title>Packagist</title>
+        <meta name="description" content="The PHP Package Repository" />
+        <meta name="author" content="Jordi Boggiano" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="shortcut icon" href="/favicon.ico?v=1442077774" />
+
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="/bundles/packagistweb/css/main.css?v=1442077774" />
+        <link rel="stylesheet" href="/css/humane/jackedup.css?v=1442077774" />
+        
+                <link rel="alternate" type="application/rss+xml" title="Newly Submitted Packages - Packagist" href="https://packagist.org/feeds/packages.rss" />
+        <link rel="alternate" type="application/rss+xml" title="New Releases - Packagist" href="https://packagist.org/feeds/releases.rss" />
+        
+        <link rel="search" type="application/opensearchdescription+xml" href="/search.osd?v=1442077774" title="Packagist" />
+
+            </head>
+
+    <body>
+    <section class="wrap">
+        <header class="navbar-wrapper navbar-fixed-top">
+            <nav class="container">
+                <div class="navbar" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <h1 class="navbar-brand"><a href="/">Packagist</a> <em class="hidden-sm hidden-xs">The PHP Package Repository</em></h1>
+                    </div>
+
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="/explore/">Browse</a>
+                            </li>
+                            <li>
+                                <a href="/packages/submit">Submit</a>
+                            </li>                            <li>
+                                <a href="/register/">Create account</a>
+                            </li>
+                            <li class="nav-user">
+                                <section class="nav-user-signin">
+                                    <a href="/login/">Sign in</a>
+
+                                    <section class="signin-box">
+                                        <form action="/login_check" method="POST">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" id="_username" name="_username" placeholder="Username:">
+                                                <span class="input-group-addon"><span class="icon-user"></span></span>
+                                            </div>
+                                            <div class="input-group">
+                                                <input class="form-control" type="password" id="_password" name="_password" placeholder="Password:">
+                                                <span class="input-group-addon"><span class="icon-lock"></span></span>
+                                            </div>
+
+                                            <div class="checkbox">
+                                                <label for="_remember_me">
+                                                    <input type="checkbox" id="_remember_me" name="_remember_me" value="on" checked="checked" />Remember me
+                                                </label>
+                                            </div>
+                                            <div class="signin-box-buttons">
+                                                <a href="https://packagist.org/login/github" class="pull-right btn btn-primary btn-github"><span class="icon-github"></span>Use Github</a>
+                                                <button type="submit" class="btn btn-success" id="_submit" name="_submit">Login</button>
+                                            </div>
+                                        </form>
+
+                                        <div class="signin-box-register">
+                                            <a href="/register/">No account yet? Create one now!</a>
+                                        </div>
+                                    </section>
+                                </section>
+                            </li>                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <section class="wrapper wrapper-search">
+    <div class="container with-description">
+        <form id="search-form" action="/search/" method="GET"  autocomplete="off">
+    <div class="sortable row">
+        <div class="hidden"></div>
+        <div class="col-xs-8 js-search-field-wrapper col-md-9">
+            <input type="search" id="search_query_query" name="search_query[query]" required="required" autocomplete="off" placeholder="Search packages..." tabindex="1" class=" form-control" value="phpoffice/phpexcel6d0a5806a6e5a3b904a87ae67f8" />
+        </div>
+
+                <div id="order-bys-wrapper" class="col-xs-4 col-md-3 col-lg-2"><a title="Sort by downloads" href="?q=phpoffice%2Fphpexcel6d0a5806a6e5a3b904a87ae67f8&amp;orderBys%5B0%5D%5Bsort%5D=downloads&amp;orderBys%5B0%5D%5Border%5D=desc" class="order-by-group"><i class="glyphicon glyphicon-arrow-down"></i></a><a title="Sort by favorites" href="?q=phpoffice%2Fphpexcel6d0a5806a6e5a3b904a87ae67f8&amp;orderBys%5B0%5D%5Bsort%5D=favers&amp;orderBys%5B0%5D%5Border%5D=desc" class="order-by-group"><i class="glyphicon glyphicon-star"></i></a></div>        <div
+            class="hidden">
+            <div id="search_query_orderBys" data-prototype="&lt;div class=&quot;form-group&quot;&gt;&lt;label class=&quot;required&quot;&gt;__name__label__&lt;/label&gt;&lt;div id=&quot;search_query_orderBys___name__&quot;&gt;&lt;div class=&quot;form-group&quot;&gt;&lt;label for=&quot;search_query_orderBys___name___sort&quot;&gt;Sort&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;search_query_orderBys___name___sort&quot; name=&quot;search_query[orderBys][__name__][sort]&quot; class=&quot; form-control&quot; /&gt;&lt;/div&gt;&lt;div class=&quot;form-group&quot;&gt;&lt;label for=&quot;search_query_orderBys___name___order&quot; class=&quot;required&quot;&gt;Order&lt;/label&gt;&lt;select id=&quot;search_query_orderBys___name___order&quot; name=&quot;search_query[orderBys][__name__][order]&quot;&gt;&lt;option value=&quot;asc&quot; &gt;asc&lt;/option&gt;&lt;option value=&quot;desc&quot; &gt;desc&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;"></div>
+        </div>
+        
+    </div>
+</form>
+
+        <div class="row">
+            <div class="col-sm-9 hidden-xs">
+                <img src="/bundles/packagistweb/img/logo-small.png?v=1442077774" class="logo">
+                <p>Packagist is the main <a href="https://getcomposer.org/">Composer</a> repository. It aggregates public PHP packages installable with Composer.</p>
+            </div>
+        </div>    </div>
+</section>
+
+
+                
+        
+        <section class="wrapper">
+            <section class="container content" role="main">
+                    
+                        <div class="search-list">
+                                    <ul class="packages list-unstyled">
+                                                            <li data-url="/packages/phpoffice/phpexcel" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/phpoffice/phpexcel">phpoffice/phpexcel</a>
+                                                                                            </h4>
+                                                            <p>PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 1&#8201;844&#8201;981</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 4&#8201;519</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/phpoffice/phpword" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/phpoffice/phpword">phpoffice/phpword</a>
+                                                                                            </h4>
+                                                            <p>PHPWord - A pure PHP library for reading and writing word processing documents (DOCX, ODT, RTF, HTML, PDF)</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 65&#8201;318</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 1&#8201;199</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/phpoffice/phppowerpoint" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/phpoffice/phppowerpoint">phpoffice/phppowerpoint</a>
+                                                                                            </h4>
+                                                            <p>PHPPresentation - Read, Create and Write Presentations documents in PHP</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 8&#8201;301</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 305</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/phpoffice/common" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/phpoffice/common">phpoffice/common</a>
+                                                                                            </h4>
+                                                            <p>PHPOffice Common</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 2&#8201;459</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 2</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/phpoffice/phpproject" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/phpoffice/phpproject">phpoffice/phpproject</a>
+                                                                                            </h4>
+                                                            <p>PHPProject - Read, Create and Write Project Management documents in PHP</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 127</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 79</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/phpexcel/phpexcel" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                                                        <h4 class="font-bold">
+                                <a href="/packages/phpexcel/phpexcel">phpexcel/phpexcel</a>
+                                                                                            </h4>
+                                                            <p>DEPRECATED! Use phpoffice/phpexcel instead.</p>
+                                                                                        <p class="abandoned">
+                                    <i class="glyphicon glyphicon-exclamation-sign"></i> Abandoned! See <a href="/packages/phpoffice/phpexcel">phpoffice/phpexcel</a>                                </p>
+                                                    </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 207&#8201;386</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 11</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/xiewulong/yii2-export" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/xiewulong/yii2-export">xiewulong/yii2-export</a>
+                                                                                            </h4>
+                                                            <p>phpoffice export</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 12</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 0</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/kaystrobach/phpoffice" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/kaystrobach/phpoffice">kaystrobach/phpoffice</a>
+                                                                                            </h4>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 1&#8201;569</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 0</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/rozklad/laravel-phpexcel" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                                                        <h4 class="font-bold">
+                                <a href="/packages/rozklad/laravel-phpexcel">rozklad/laravel-phpexcel</a>
+                                                                                            </h4>
+                                                            <p>PHPOffice PHPExcel wrapper</p>
+                                                                                        <p class="abandoned">
+                                    <i class="glyphicon glyphicon-exclamation-sign"></i> Abandoned!                                 </p>
+                                                    </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 985</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 1</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/phpoffice/phpvisio" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/phpoffice/phpvisio">phpoffice/phpvisio</a>
+                                                                                            </h4>
+                                                            <p>PHPVisio - Read, Create and Write Diagrams documents in PHP</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 108</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 81</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/lightshire/laravel-phpexcel-wrapper" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/lightshire/laravel-phpexcel-wrapper">lightshire/laravel-phpexcel-wrapper</a>
+                                                                                            </h4>
+                                                            <p>PHPOffice PHPExcel wrapper</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 467</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 2</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/aejnsn/phpexcel-laravel" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/aejnsn/phpexcel-laravel">aejnsn/phpexcel-laravel</a>
+                                                                                            </h4>
+                                                            <p>PHPOffice PHPExcel wrapper</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 96</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 1</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/doublebit/phpword" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/doublebit/phpword">doublebit/phpword</a>
+                                                                                            </h4>
+                                                            <p>PHPWord - A pure PHP library for reading and writing word processing documents (DOCX, ODT, RTF, HTML, PDF)</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 26</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 0</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/chiabit/laravel-phpexcel" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/chiabit/laravel-phpexcel">chiabit/laravel-phpexcel</a>
+                                                                                            </h4>
+                                                            <p>PHPOffice PHPExcel wrapper</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 4</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 1</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+                                                            <li data-url="/packages/jpcaparas/phpword" class="row">
+                <div class="col-xs-12 package-item">
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10">
+                            <p class="pull-right language">PHP</p>                            <h4 class="font-bold">
+                                <a href="/packages/jpcaparas/phpword">jpcaparas/phpword</a>
+                                                                                            </h4>
+                                                            <p>PHPWord - A pure PHP library for reading and writing word processing documents (DOCX, ODT, RTF, HTML, PDF)</p>
+                                                                                </div>
+                        <div class="col-sm-3 col-lg-2">
+                                                            <p class="metadata">
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-arrow-down"></i> 143</span>
+                                    <span class="metadata-block"><i class="glyphicon glyphicon-star"></i> 0</span>
+                                </p>
+                                                    </div>
+                    </div>
+                </div>
+            </li>
+        
+                    <div class="pagination"><ul><li class="prev disabled"><span>&larr; Previous</span></li><li class="active"><span>1</span></li><li><a href="/search/?q=phpoffice/phpexcel6d0a5806a6e5a3b904a87ae67f8&reason=package_not_found&search_query%5Bquery%5D=phpoffice/phpexcel6d0a5806a6e5a3b904a87ae67f8&page=2">2</a></li><li class="next"><a href="/search/?q=phpoffice/phpexcel6d0a5806a6e5a3b904a87ae67f8&reason=package_not_found&search_query%5Bquery%5D=phpoffice/phpexcel6d0a5806a6e5a3b904a87ae67f8&page=2">Next &rarr;</a></li></ul></div>
+            </ul>
+
+            
+        </div>
+                </section>
+        </section>
+    </section>
+
+        <footer class="wrapper-footer">
+            <nav class="container">
+                <div class="row">
+                    <ul class="social col-xs-7 col-sm-4 col-md-2 pull-right">
+                        <li><a href="http://github.com/composer/packagist" title="GitHub"><span class="icon-github"></span></a></li>
+                        <li><a href="https://twitter.com/packagist" title="Follow @packagist"><span class="icon-twitter"></span></a></li>
+                        <li><a href="mailto:contact@packagist.org" title="Contact"><span class="icon-mail"></span></a></li>
+                    </ul>
+
+                    <ul class="col-xs-4 col-md-2">
+                        <li><a href="/about">About Packagist</a></li>
+                        <li><a href="/feeds/">Atom/RSS Feeds</a></li>
+                    </ul>
+
+                    <div class="clearfix visible-xs-block"></div>
+
+                    <ul class="col-xs-3 col-md-2">
+                        <li><a href="/statistics">Statistics</a></li>
+                        <li><a href="/explore/">Browse Packages</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <p class="toran col-xs-12">Packagist maintenance and hosting is supported by <a href="https://toranproxy.com/">Toran Proxy</a></p>
+                </div>
+            </nav>
+        </footer>
+
+        <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="/js/libs/humane.min.js?v=1442077774"></script>
+        <script src="/bundles/packagistweb/js/layout.js?v=1442077774"></script>
+        <script src="/bundles/packagistweb/js/search.js?v=1442077774"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>        <script>
+            var _gaq=[['_setAccount','UA-26723099-1'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+            </body>
+</html>
