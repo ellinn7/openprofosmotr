@@ -1,101 +1,38 @@
-Yii 2 Basic Project Template
-============================
+openprofosmotr
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+Приложение предназначено для проведения поликлиниками профосмотров в соответствии с Приказом Минздравсоцразвития РФ №302н.
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+Базовая структура приложения соответствует шаблону Yii2 basic.
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-basic/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-basic/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-basic.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-basic)
+Модели:
+Patients - предназначена для хранения данных о сотрудниках, проходящих медосмотр.
+Factors1 - соответствует приложению 1 приказа 302н - Вредные и опасные производственные факторы
+Specialists1 - осмотр специалистами в соответствии с Приложением 1
+Procedures1 - прохождение процедур в соответствии с Приложением 1
+Againsts1 - противопоказания в соответствии с Приложением 1
+Factors2 - соответствует приложению 2 приказа 302н - Перечень работ, при выполнении которых проводятся обязательные мед.осмотры
+Specialists2 - осмотр специалистами в соответствии с Приложением 2
+Procedures2 - прохождение процедур в соответствии с Приложением 2
+Againsts2 - противопоказания в соответствии с Приложением 2
+SpecialistsRequired - обязательный осмотр специалистами вне зависимости от пунктов приложения 1 или 2
+ProceduresRequired - обязательные процедуры вне зависимости от пунктов приложения 1 или 2
 
-DIRECTORY STRUCTURE
--------------------
+CRUD
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+BlanksController - для печати бланков
+views/blanks - бланки
 
+PatientsController
+здесь располагаются экшены (1) загрузки данных о сотрудниках организации, проходящих профосмотр и (2) для формирования бланков с их данными
+1) actionUpload
+для загрузки данных о сотрудниках из файла .xls/.ods
+Пример файла ./files/file1.xls
+2) actionLandscape и actionPortrait
+На данном этапе нам не удалось формировать в MPDF и выводить на печать сразу всю пачку бланков - и портретной и ландшафтной ориентации.
+Будем рады полезным советам по доработке.
 
+Commands
+FactorsController
+Для загрузки приведенных в формат .csv таблиц из приложений 1 и 2 (располагаются в ./files).
 
-REQUIREMENTS
-------------
-
-The minimum requirement by this project template that your Web server supports PHP 5.4.0.
-
-
-INSTALLATION
-------------
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install via Composer
-
-If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-php composer.phar global require "fxp/composer-asset-plugin:~1.0.0"
-php composer.phar create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
-];
-```
-
-**NOTE:** Yii won't create the database for you, this has to be done manually before you can access it.
-
-Also check and edit the other files in the `config/` directory to customize your application.
+Также в ./files располагается дамп базы postgresql с уже выгруженными данными и для работы с системой. 
