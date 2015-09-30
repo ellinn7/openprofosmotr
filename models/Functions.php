@@ -88,30 +88,98 @@ class Functions
      */
     public static function prepareFactors($factors_str)
     {
-        if(!$factors_str) {
-            return null;
-        }
         $str=preg_replace('/([0-9]),/','$1.,',$factors_str);        
-        if(!preg_match('/\.$/',$str)) {
+        if($str&&!preg_match('/\.$/',$str)) {
             $str.='.';
         }
         return $str;        
     }
     
-    /**
-     * @param string $filename
-     */
-    public static function loadData($filename)
+    
+    public static function checkFactors1($factors_str)
+    {
+        $factors_arr=explode(',',$factors_str);
+        foreach($factors_arr as $code) {
+            $factor=Factors1::find()->where(['code'=>$code])->one();
+            return self::checkFactor($factor,$code,1);
+        }
+    }
+    
+    
+    public static function checkFactors2($factors_str)
+    {
+        $factors_arr=explode(',',$factors_str);
+        foreach($factors_arr as $code) {
+            $factor=Factors2::find()->where(['code'=>$code])->one();
+            return self::checkFactor($factor,$code,2);
+        }
+    }
+    
+    protected static function checkFactor($factor,$code,$pril)
+    {
+        if(!$factor) {
+            return "Код $code Приложения $pril отсутствует в приказе!";
+        }
+        if(!$factor->specialists&&!$factor->procedures) {
+            return "Код $code Приложения $pril не является подпунктом!";
+        }
+        return 1;
+    }
+
+    protected static function validateData($filename)
     {
         $data=self::loadFromXls($filename);
         if(!$data) {
-            return false;
+            return 'Нет данных';
         }
+        foreach ($data as $i=>$row) {
+            if($i==0) {
+                if(!isset($row[4])) {
+                    return 'Не задано предприятие';
+                }
+                continue;
+            }
+            foreach([1,2,3,4,5,6,8] as $column) {
+                if(!isset($row[$column])) {
+                    return 'Не заданы основные атрибуты: СНИЛС, Фамилия, Имя, Отчество, Пол, Специальность, Дата Рождения';
+                }
+            }
+            if(!isset($row[9]) && !isset($row[10])) {
+                return 'Не заданы пункты Приложений';
+            }
+            $new_row9=self::prepareFactors($row[9]);
+            $data[$i][9]=$new_row9;
+            if($new_row9) {
+                $check_factors1=self::checkFactors1($new_row9);
+                if($check_factors1!=1) {
+                    return $check_factors1;
+                }
+            }
+            $new_row10=self::prepareFactors($row[10]);
+            $data[$i][10]=$new_row10;
+            if($new_row10) {
+                $check_factors2=self::checkFactors2($new_row10);
+                if($check_factors2!=1) {
+                    return $check_factors2;
+                }
+            }
+        }
+        return $data;
+    }
+    
+    protected static function saveData($data,$filename)
+    {
         foreach ($data as $i=>$row) {
             if($i==0) {
                 $firm=$row[4];
                 continue;
             }
+            foreach([7,11,12,13,14,15,16,17,18,19,20,21,22,23,24] as $column) {
+                if(!array_key_exists($column, $row)) {
+                    $row['column']='';
+                }
+            }
+            if(isset($row[5]))
             $data_arr=[
                 'firm'=>$firm,
                 'snils'=>$row[1],
@@ -122,8 +190,8 @@ class Functions
                 'spec'=>$row[6],
                 'phone'=>$row[7],
                 'birthday'=> self::formatDate($row[8]),
-                'factors1'=> self::prepareFactors($row[9]),
-                'factors2'=> self::prepareFactors($row[10]),
+                'factors1'=> $row[9],
+                'factors2'=> $row[10],
                 'seniority'=>$row[11],
                 'dep'=>$row[12],
                 'prof'=>$row[13],
@@ -142,7 +210,19 @@ class Functions
             ];
             Patients::add($data_arr);
         }
-        return true;
+    }
+
+    /**
+     * @param string $filename
+     */
+    public static function loadData($filename)
+    {
+        $data=self::validateData($filename);
+        if(is_string($data)) {
+            return $data;
+        }
+        self::saveData($data,$filename);
+        return 1;
     }
     
 }

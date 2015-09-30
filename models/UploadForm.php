@@ -15,7 +15,7 @@ class UploadForm extends Model
     public $file;
 
     /**
-     * @return array the validation rules.
+     * @return array the validation rules.,'extensions' => 'xls,ods',
      */
     public function rules()
     {

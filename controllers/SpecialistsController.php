@@ -3,19 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Patients;
-use app\models\PatientsSearch;
+use app\models\Specialists;
+use app\models\SpecialistsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\UploadForm;
-use yii\web\UploadedFile;
-use app\models\Functions;
 
 /**
- * PatientsController implements the CRUD actions for Patients model.
+ * SpecialistsController implements the CRUD actions for Specialists model.
  */
-class PatientsController extends Controller
+class SpecialistsController extends Controller
 {
     public function behaviors()
     {
@@ -30,12 +27,12 @@ class PatientsController extends Controller
     }
 
     /**
-     * Lists all Patients models.
+     * Lists all Specialists models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PatientsSearch();
+        $searchModel = new SpecialistsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,25 +42,25 @@ class PatientsController extends Controller
     }
 
     /**
-     * Displays a single Patients model.
+     * Displays a single Specialists model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
-    
+
     /**
-     * Creates a new Patients model.
+     * Creates a new Specialists model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Patients();
+        $model = new Specialists();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,7 +72,7 @@ class PatientsController extends Controller
     }
 
     /**
-     * Updates an existing Patients model.
+     * Updates an existing Specialists model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +91,7 @@ class PatientsController extends Controller
     }
 
     /**
-     * Deletes an existing Patients model.
+     * Deletes an existing Specialists model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -105,54 +102,20 @@ class PatientsController extends Controller
 
         return $this->redirect(['index']);
     }
-        
-    /**
-     * загрузка файла с данными
-     * @return type
-     */
-    public function actionUpload()
-    {
-        $model = new UploadForm();
-
-        if (Yii::$app->request->isPost) {
-            $model->file = UploadedFile::getInstance($model, 'file');
-            
-            if(!$model->file) {
-                return $this->render('upload', ['model' => $model]);
-            }
-            
-            $datetime=new \DateTime();
-            $filename=$datetime->format('Y_m_d_H_i_s').'.'.$model->file->extension;
-            
-            if ($model->validate() && $model->file->saveAs('/tmp/'.$filename)) {
-                $result=Functions::loadData('/tmp/'.$filename);
-                if($result==1) {
-                    $model->file->saveAs('../uploads/'.$filename);
-                    unlink('/tmp/'.$filename);
-                    $this->redirect(['index']);
-                } else {
-                    unlink('/tmp/'.$filename);
-                    $model->addError('file',$result);
-                }
-            }
-        }
-        return $this->render('upload', ['model' => $model]);
-    }
 
     /**
-     * Finds the Patients model based on its primary key value.
+     * Finds the Specialists model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Patients the loaded model
+     * @return Specialists the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Patients::findOne($id)) !== null) {
+        if (($model = Specialists::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
 }

@@ -18,7 +18,7 @@ class PatientsSearch extends Patients
     public function rules()
     {
         return [
-            [['id', 'passport_series', 'passport_number'], 'integer'],
+            [['id', 'passport_series', 'passport_number','talon'], 'integer'],
             [['surname', 'name', 'patron', 'snils', 'sex', 'spec', 'phone', 'birthday', 'factors1', 'factors2', 'seniority', 'dep', 'prof', 'addresse_reg', 'addresse_fact', 'disability', 'passport_given_date', 'passport_given_who', 'insurance_company', 'insurance_number', 'living_lpu', 'descr', 'firm', 'file'], 'safe'],
         ];
     }
@@ -61,6 +61,7 @@ class PatientsSearch extends Patients
             'passport_series' => $this->passport_series,
             'passport_number' => $this->passport_number,
             'passport_given_date' => $this->passport_given_date,
+            'passport_given_date' => $this->talon,
         ]);
 
         $query->andFilterWhere(['like', 'surname', $this->surname])

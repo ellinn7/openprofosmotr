@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'id',
                 'value'=> function($model) {
-                    return Html::a('Бланки 1',['landscape','id'=>$model->id]).'<br>'.Html::a('Бланки 2',['portrait','id'=>$model->id]);
+                    return Html::a('Бланки',['//blanks/print','id'=>$model->id]);
                 },
                 'format'=>'raw',
                 'header'=>'Печать бланков',
@@ -38,25 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'snils',
             'sex',
             'spec',
-            'phone',
             'birthday',
             'factors1',
             'factors2',
-            'seniority',
-            'dep',
-            'prof',
-            'addresse_reg',
-            'addresse_fact',
-            'disability',
-            'passport_series',
-            'passport_number',
-            'passport_given_date',
-            'passport_given_who',
-            'insurance_company',
-            'insurance_number',
-            'living_lpu',
-            'descr',
-
+            
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}{update}{delete}',
