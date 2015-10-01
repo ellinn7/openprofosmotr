@@ -117,10 +117,9 @@ class PatientsController extends Controller
         if (Yii::$app->request->isPost) {
             $model->file = UploadedFile::getInstance($model, 'file');
             
-            if(!$model->file) {
+            if(!$model->file || !in_array($model->file->extension,['xls','ods'])) {
                 return $this->render('upload', ['model' => $model]);
             }
-            
             $datetime=new \DateTime();
             $filename=$datetime->format('Y_m_d_H_i_s').'.'.$model->file->extension;
             

@@ -38,7 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'snils',
             'sex',
             'spec',
-            'birthday',
+            [
+                'attribute'=>'birthday',
+                'value'=> function($model) {
+                    return $model->age;
+                },
+                'header'=>'Возраст',
+            ],
             'factors1',
             'factors2',
             

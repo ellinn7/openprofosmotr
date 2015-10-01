@@ -33,7 +33,10 @@ class Functions
     public static function toInt($str)
     {
         $val=preg_replace('/[^0-9]/ui','',$str);
-        return $val*1;
+        if($val) {
+            return $val*1;
+        }
+        return null;
     }
     
     /**
@@ -88,6 +91,7 @@ class Functions
      */
     public static function prepareFactors($factors_str)
     {
+        $str=preg_replace('/;/',',',$factors_str);        
         $str=preg_replace('/([0-9]),/','$1.,',$factors_str);        
         if($str&&!preg_match('/\.$/',$str)) {
             $str.='.';
@@ -139,9 +143,9 @@ class Functions
                 }
                 continue;
             }
-            foreach([1,2,3,4,5,6,8] as $column) {
+            foreach([2,3,4,5,6,8] as $column) {
                 if(!isset($row[$column])) {
-                    return 'Не заданы основные атрибуты: СНИЛС, Фамилия, Имя, Отчество, Пол, Специальность, Дата Рождения';
+                    return 'Не заданы основные атрибуты: Фамилия, Имя, Отчество, Пол, Специальность, Дата Рождения';
                 }
             }
             if(!isset($row[9]) && !isset($row[10])) {
@@ -163,6 +167,11 @@ class Functions
                     return $check_factors2;
                 }
             }
+            foreach([1,7,11,12,13,14,15,16,17,18,19,20,21,22,23,24] as $column) {
+                if(!array_key_exists($column, $row)) {
+                    $data[$i][$column]='';
+                }
+            }
         }
         return $data;
     }
@@ -174,12 +183,6 @@ class Functions
                 $firm=$row[4];
                 continue;
             }
-            foreach([7,11,12,13,14,15,16,17,18,19,20,21,22,23,24] as $column) {
-                if(!array_key_exists($column, $row)) {
-                    $row['column']='';
-                }
-            }
-            if(isset($row[5]))
             $data_arr=[
                 'firm'=>$firm,
                 'snils'=>$row[1],

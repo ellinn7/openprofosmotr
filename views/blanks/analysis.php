@@ -89,7 +89,7 @@
                 <div class="percent25 div-in-line font80percent">Фамилия, И.,О.</div>
                 <div class="percent50 div-in-line font80percent"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
                 <div class="percent20 div-in-line font80percent">Возраст</div>
-                <div class="percent5 div-in-line bottomline font80percent"><?=$age?></div>
+                <div class="percent5 div-in-line bottomline font80percent"><?=$model->age?></div>
             </div>
 
             <div class="percent100">

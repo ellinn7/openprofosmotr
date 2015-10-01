@@ -52,11 +52,11 @@ class Patients extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['surname', 'name', 'patron', 'snils', 'spec', 'phone', 'factors1', 'factors2', 'seniority', 'dep', 'prof', 'addresse_reg', 'addresse_fact', 'disability', 'passport_given_who', 'insurance_company', 'insurance_number', 'living_lpu', 'descr', 'firm', 'file'], 'string'],
-            [['sex','surname','name','patron','birthday','firm'], 'required'],
-            [['birthday', 'passport_given_date'], 'safe'],
-            [['passport_series', 'passport_number', 'talon'], 'integer'],
-            [['sex'], 'string', 'max' => 1, 'encoding'=>'UTF-8']
+            [['surname','name','patron','snils','spec','phone','factors1','factors2','seniority','dep','prof','addresse_reg','addresse_fact','disability','passport_given_who','insurance_company','insurance_number','living_lpu','descr','firm','file'],'string'],
+            [['sex','surname','name','patron','birthday','firm'],'required'],
+            [['birthday','passport_given_date'],'safe'],
+            [['passport_series','passport_number','talon'],'integer'],
+            [['sex'],'string','max'=>1,'encoding'=>'UTF-8']
         ];
     }
 
@@ -104,7 +104,6 @@ class Patients extends \yii\db\ActiveRecord
         return parent::afterFind();
     }
     
-
     /**
      * 
      * @param type $data
@@ -116,4 +115,15 @@ class Patients extends \yii\db\ActiveRecord
         $patient->save();
     }
     
+    /**
+     * age from birthday
+     * @return type
+     */
+    public function getAge()
+    {
+        $birthday=new \DateTime($this->birthday);
+        $now=new \DateTime();
+        $age=$now->diff($birthday);
+        return $age->format('%y');
+    }
 }

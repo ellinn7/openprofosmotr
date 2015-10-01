@@ -51,6 +51,10 @@ class BlanksController extends Controller
             $procedures=Procedures1::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
             if($procedures) {
                 foreach($procedures as $procedure) {
+                    if(((preg_match('/40/',$procedure->name) && preg_match('/лет/ui',$procedure->name) && $model->age<40))
+                    ||(preg_match('/женщин|гинеколог/ui',$procedure->name) && $model->sex=='м')) {
+                        continue;
+                    }
                     $procedures_arr[]=$procedure->name;
                 }
             }
@@ -76,6 +80,10 @@ class BlanksController extends Controller
             $procedures=Procedures2::find()->where(['factor'=>$factor_model->id])->all();
             if($procedures) {
                 foreach($procedures as $procedure) {
+                    if(((preg_match('/40/',$procedure->name) && preg_match('/лет/ui',$procedure->name) && $model->age<40))
+                    ||(preg_match('/женщин|гинеколог/ui',$procedure->name) && $model->sex=='м')) {
+                        continue;
+                    }
                     $procedures_arr[]=$procedure->name;
                 }
             }
@@ -90,7 +98,7 @@ class BlanksController extends Controller
         $factors1_arr=array_unique($factors1_arr);
         $factors2_arr=  array_unique($factors2_arr);
         $specialists_arr=self::prepareSpecialists($specialists_arr);
-        $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex);
+        $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex,$model->age);
         $againsts_arr=array_unique($againsts_arr);
         
         $this->pdf([
@@ -204,13 +212,9 @@ class BlanksController extends Controller
     
     protected function analysis($model,$factors1,$factors2)
     {
-        $birthday=new \DateTime($model->birthday);
-        $now=new \DateTime();
-        $age=$now->diff($birthday);
         return [
             'html'=>$this->render('analysis',[
                 'model'=>$model,
-                'age'=>$age->format('%y'),
                 'reticul'=>$this->defineProc($factors1,$factors2,['%етикулоциты%']),
                 'syph'=>$this->defineProc($factors1,$factors2,['%ифилис%']),
                 'nose'=>$this->defineProc($factors1,$factors2,['%носа%','%стафилококк%']),
@@ -244,11 +248,12 @@ class BlanksController extends Controller
      * @param array $arr
      * @return array
      */
-    protected static function prepareProcedures($arr,$sex)
+    protected static function prepareProcedures($arr,$sex,$age)
     {
         $records=  ProceduresRequired::find()->all();
         foreach ($records as $record) {
-            if(preg_match('/женщин/ui',$record->descr) && $sex=='м') {
+            if( (preg_match('/женщин/ui',$record->descr) && $sex=='м')
+                ||(preg_match('/40/',$record->descr) && preg_match('/лет/ui',$record->descr) && $age<40)) {
                 continue;
             }
             $arr[]=$record->name;
@@ -266,7 +271,6 @@ class BlanksController extends Controller
      */
     protected function defineProc($factors1,$factors2,$proc_cond_arr)
     {
-        return '123';
         $proc_cond="and name not like '%*%'";
         foreach ($proc_cond_arr as $el) {
             $proc_cond.=" and name like '$el'";
@@ -303,7 +307,9 @@ class BlanksController extends Controller
         
         $pdf=new \mPDF('',$pages[0]['format'],0,'',5,5,8,5);        
         foreach($pages as $page) {            
-            $pdf->AddPageByArray(['newformat'=>$page['format']]); //A4-P
+            if($pdf->y>13) {
+                $pdf->AddPageByArray(['newformat'=>$page['format']]); //A4-P
+            }
             $pdf->writeHtml($page['html']);
             
             

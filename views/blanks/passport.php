@@ -243,7 +243,6 @@
             </tr>
         </tbody>
     </table>
-    
     <p>М.П.</p>
 </div>
 <columnbreak>

@@ -29,6 +29,9 @@ $this->title = 'OpenProfOsmotr';
                 <p>
                 <?php echo Html::a('Загрузка данных',['patients/upload'], ['class' => 'btn btn-success']); ?>
                 </p>
+                <p>
+                    <?php echo Html::a('Пример файла',['//files/file1.xls']); ?>
+                </p>
             </div>
             <div class="col-lg-4">
                 <h2>Приказ №302н</h2>
