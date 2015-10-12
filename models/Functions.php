@@ -176,7 +176,7 @@ class Functions
         return $data;
     }
     
-    protected static function saveData($data,$filename)
+    protected static function saveData($data,$filename,$talon)
     {
         foreach ($data as $i=>$row) {
             if($i==0) {
@@ -210,6 +210,7 @@ class Functions
                 'living_lpu'=>$row[23],
                 'descr'=>$row[24],
                 'file'=>$filename,
+                'talon'=>$talon,
             ];
             Patients::add($data_arr);
         }
@@ -218,13 +219,13 @@ class Functions
     /**
      * @param string $filename
      */
-    public static function loadData($filename)
+    public static function loadData($filename,$talon)
     {
         $data=self::validateData($filename);
         if(is_string($data)) {
             return $data;
         }
-        self::saveData($data,$filename);
+        self::saveData($data,$filename,$talon);
         return 1;
     }
     

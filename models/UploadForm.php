@@ -13,6 +13,7 @@ class UploadForm extends Model
      * @var UploadedFile|Null file attribute
      */
     public $file;
+    public $talon=1;
 
     /**
      * @return array the validation rules.,'extensions' => 'xls,ods',
@@ -21,12 +22,14 @@ class UploadForm extends Model
     {
         return [
             [['file'],'file'],//'extensions' => 'xls,ods',],
+            [['talon'],'integer'],
         ];
     }
     
     public function attributeLabels() {
         return [
             'file' => 'Файл',
+            'talon' => 'печатать талон',
         ];
     }
 }

@@ -124,7 +124,7 @@ class PatientsController extends Controller
             $filename=$datetime->format('Y_m_d_H_i_s').'.'.$model->file->extension;
             
             if ($model->validate() && $model->file->saveAs('/tmp/'.$filename)) {
-                $result=Functions::loadData('/tmp/'.$filename);
+                $result=Functions::loadData('/tmp/'.$filename,$model->talon);
                 if($result==1) {
                     $model->file->saveAs('../uploads/'.$filename);
                     unlink('/tmp/'.$filename);

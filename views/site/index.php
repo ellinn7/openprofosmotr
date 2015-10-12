@@ -30,7 +30,7 @@ $this->title = 'OpenProfOsmotr';
                 <?php echo Html::a('Загрузка данных',['patients/upload'], ['class' => 'btn btn-success']); ?>
                 </p>
                 <p>
-                    <?php echo Html::a('Пример файла',['//files/file1.xls']); ?>
+                    <?php echo Html::a('Пример файла','../files/file1.xls'); ?>
                 </p>
             </div>
             <div class="col-lg-4">

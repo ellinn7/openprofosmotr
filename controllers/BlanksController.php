@@ -106,7 +106,7 @@ class BlanksController extends Controller
             $this->personal($model),
             $this->passport($model,$factors1_arr,$factors2_arr,$specialists_arr,$procedures_arr),
             $this->resume($model,$factors1,$factors2),
-            $this->bloodclinic_talon($model,true),
+            $this->bloodclinic_talon($model,$model->talon),
             $this->analysis($model,$factors1,$factors2),
         ]);
     }

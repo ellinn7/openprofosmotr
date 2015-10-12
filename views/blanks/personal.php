@@ -19,25 +19,25 @@
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Имя</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->name?></b></div>
-            <div class="percent25 div-in-line">Пол</div>
+            <div class="percent25 div-in-line text-center">Пол</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->sex?></b></div>
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Отчество</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->patron?></b></div>
-            <div class="percent25 div-in-line">Инвалидность</div>
+            <div class="percent25 div-in-line text-center">Инвалидность</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->disability?> &nbsp;</b></div>
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Дата рождения</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->birthday?></b></div>
-            <div class="percent25 div-in-line">СНИЛС</div>
+            <div class="percent25 div-in-line text-center">СНИЛС</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->snils?></b></div>
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Паспорт</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->passport_series?> <?=$model->passport_number?> &nbsp;</b></div>
-            <div class="percent25 div-in-line">Полис ОМС</div>
+            <div class="percent25 div-in-line text-center">Полис ОМС</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->insurance_number?> &nbsp;</b></div>
         </div>
         <div class="percent100 pspace">
@@ -59,9 +59,15 @@
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Контактный телефон</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->phone?> &nbsp;</b></div>
-            <div class="percent25 div-in-line">Стаж</div>
+            <div class="percent25 div-in-line text-center">Стаж</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->seniority?> мес.</b></div>
         </div>
+        <table class="common-table">
+            <tbody>
+                <tr><td>Прил 1.</td><td><?=$model->factors1?></td></tr>
+                <tr><td>Прил 2.</td><td><?=$model->factors2?></td></tr>
+            </tbody>
+        </table>
     </div>
     
     <div class="h2w">
