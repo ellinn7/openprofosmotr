@@ -23,6 +23,6 @@
     </div>
     <div class="h2t percent50 to-cut-left div-in-line">
         <h4 class="h4-blank text-center">Противопоказания</h4>
-        <div class="redline">- <?=$againsts_str?></div>
+        <div class="redline font50percent">- <?=$againsts_str?></div>
     </div>
 </div>

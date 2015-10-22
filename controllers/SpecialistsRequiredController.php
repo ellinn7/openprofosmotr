@@ -8,6 +8,8 @@ use app\models\SpecialistsRequiredSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * SpecialistsRequiredController implements the CRUD actions for SpecialistsRequired model.
@@ -21,6 +23,24 @@ class SpecialistsRequiredController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index','view','create','update','delete'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity;
+                        }
+                    ],
+                    [
+                        'actions' => ['index','view','create','update','delete'],
+                        'denyCallback' => function ($rule, $action) {
+                            throw new ForbiddenHttpException('Авторизуйтесь, чтобы начать пользоваться системой.');
+                        }
+                    ],
                 ],
             ],
         ];

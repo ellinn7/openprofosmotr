@@ -76,9 +76,10 @@
     </div>
     
     <div>
-        9. Условия труда (в настоящее время):
+        9. Условия труда (в настоящее время): <?='<u>Прил 1:</u> <b>'.$model->factors1.'</b> <u>Прил 2:</u> <b>'.$model->factors2.'</b>'?>
     </div>
     
+    <?php /*
     <table class="common-table percent100">
         <thead>
             <tr>
@@ -88,15 +89,16 @@
         </thead>
         <tbody>
             <?php
-            foreach ($factors1_arr as $factor) {
-                echo "<tr><td>$factor</td><td></td></tr>";
-            }
-            foreach ($factors2_arr as $factor) {
-                echo "<tr><td>$factor</td><td></td></tr>";
-            }
+//            foreach ($factors1_arr as $factor) {
+//                echo "<tr><td>$factor</td><td></td></tr>";
+//            }
+//            foreach ($factors2_arr as $factor) {
+//                echo "<tr><td>$factor</td><td></td></tr>";
+//            }
             ?>
         </tbody>
     </table>
+    */?>
     
     <div>
         10. Профессиональный маршрут до начала работ в данном виде работ (для предварительного медицинского осмотра (обследования):
@@ -205,11 +207,33 @@
             </tr>
         </thead>
         <tbody>
+            <tr><td>1</td><td>ЭКГ</td><td></td><td></td></tr>
+            <tr><td>3</td><td>ПАК</td><td></td><td></td></tr>
+            <tr><td>4</td><td>Глюкоза</td><td></td><td></td></tr>
+            <tr><td>5</td><td>Холестерин</td><td></td><td></td></tr>
+            <tr><td>6</td><td>ПАМ</td><td></td><td></td></tr>
+            <tr><td>7</td><td rowspan="3" >ФЛГ</td><td rowspan="3" colspan="2"></td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>8</td><td>Спирография</td><td></td><td></td></tr>
             <?php
-            $num=0;
-            foreach ($procedures_arr as $procedure) {
-                echo "<tr><td>".++$num."</td><td>$procedure</td><td></td><td></td></tr>";
+            if($model->sex=='ж' && $model->age>=40) {
+                echo "<tr><td>9</td><td>УЗИ молочных желез</td><td></td><td></td></tr>";
+            } else {
+                echo '<tr><td>9</td><td></td><td></td><td></td></tr>';
             }
+            ?>
+            <tr><td>10</td><td></td><td></td><td></td></tr>
+            <tr><td>11</td><td></td><td></td><td></td></tr>
+            <tr><td>12</td><td></td><td></td><td></td></tr>
+            <tr><td>13</td><td></td><td></td><td></td></tr>
+            <tr><td>14</td><td></td><td></td><td></td></tr>
+            <tr><td>15</td><td></td><td></td><td></td></tr>
+            <?php
+//            $num=0;
+//            foreach ($procedures_arr as $procedure) {
+//                echo "<tr><td>".++$num."</td><td>$procedure</td><td></td><td></td></tr>";
+//            }
             ?>
         </tbody>
     </table>

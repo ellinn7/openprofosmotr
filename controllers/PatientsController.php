@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
 use app\models\Functions;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * PatientsController implements the CRUD actions for Patients model.
@@ -24,6 +26,24 @@ class PatientsController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index','view','create','update','delete','upload'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity;
+                        }
+                    ],
+                    [
+                        'actions' => ['index','view','create','update','delete','upload'],
+                        'denyCallback' => function ($rule, $action) {
+                            throw new ForbiddenHttpException('Авторизуйтесь, чтобы начать пользоваться системой.');
+                        }
+                    ],
                 ],
             ],
         ];

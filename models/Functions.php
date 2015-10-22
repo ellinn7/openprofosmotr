@@ -91,8 +91,9 @@ class Functions
      */
     public static function prepareFactors($factors_str)
     {
-        $str=preg_replace('/;/',',',$factors_str);        
-        $str=preg_replace('/([0-9]),/','$1.,',$factors_str);        
+        $str=preg_replace('/;/u',',',$factors_str);
+        $str=preg_replace('/ /u','',$str);
+        $str=preg_replace('/([0-9]),/','$1.,',$str);        
         if($str&&!preg_match('/\.$/',$str)) {
             $str.='.';
         }

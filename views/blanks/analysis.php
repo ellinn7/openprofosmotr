@@ -237,9 +237,8 @@
     
     <div class="percent50 div-in-line to-cut h2w">
         <div class="redline">
-            <p>
-                <b>МУЗ ГП №1 <br> ДДР</b>
-            </p>
+            <div class="percent80 div-in-line"><b>МУЗ ГП №1 <br> ДДР</b></div>
+            <div class="percent20 div-in-line text-right"><?=$blood?></div>
             <p class="text-center">Биохимический анализ крови</p>
             <div class="percent100">
                 <div class="percent20 div-in-line">Ф.И.О.</div>

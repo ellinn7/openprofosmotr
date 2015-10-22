@@ -1,8 +1,8 @@
 <div class="blank percent100">
     <div class="h2w to-cut-bottom">
         <div class="percent75 div-in-line">
-            <h4 class="h4-blank text-center">ООО Медицинский центр Аксион
-            <br>(ООО "Медицинский центр "Аксион")</h4>
+            <div class="text-center">ООО Медицинский центр Аксион
+            <br>(ООО "Медицинский центр "Аксион")</div>
         </div>
         <div class="percent25 div-in-line text-right">
                 Медицинская документация <br>
@@ -11,20 +11,21 @@
                 Минздравом СССР <br>
                 № 1338 1987 г.
         </div>
-        <h3 class="h3-blank text-center">Периодический (предварительный) медицинский осмотр</h3>
+        <div class="text-center">Периодический (предварительный) медицинский осмотр</div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Фамилия</div>
-            <div class="percent75 div-in-linebottomline text-center"><b><?=$model->surname?></b></div>
+            <div class="percent25 div-in-line text-center bottomline font150percent"><b><?=$model->surname?></b></div>
+            <div class="percent50 div-in-line"></div>
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Имя</div>
-            <div class="percent25 div-in-line bottomline text-center"><b><?=$model->name?></b></div>
+            <div class="percent25 div-in-line bottomline text-center font150percent"><b><?=$model->name?></b></div>
             <div class="percent25 div-in-line text-center">Пол</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->sex?></b></div>
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Отчество</div>
-            <div class="percent25 div-in-line bottomline text-center"><b><?=$model->patron?></b></div>
+            <div class="percent25 div-in-line bottomline text-center font150percent"><b><?=$model->patron?></b></div>
             <div class="percent25 div-in-line text-center">Инвалидность</div>
             <div class="percent25 div-in-line bottomline text-center"><b><?=$model->disability?> &nbsp;</b></div>
         </div>

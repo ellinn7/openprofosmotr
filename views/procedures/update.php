@@ -7,7 +7,6 @@ use yii\helpers\Html;
 
 $this->title = 'Процедуры - редактирование';
 $this->params['breadcrumbs'][] = ['label' => 'Процедуры', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->procedure, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Редактирование';
 ?>
 <div class="procedures-update">

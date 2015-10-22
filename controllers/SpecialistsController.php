@@ -8,6 +8,8 @@ use app\models\SpecialistsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * SpecialistsController implements the CRUD actions for Specialists model.
@@ -21,6 +23,24 @@ class SpecialistsController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index','view','create','update','delete'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity;
+                        }
+                    ],
+                    [
+                        'actions' => ['index','view','create','update','delete'],
+                        'denyCallback' => function ($rule, $action) {
+                            throw new ForbiddenHttpException('Авторизуйтесь, чтобы начать пользоваться системой.');
+                        }
+                    ],
                 ],
             ],
         ];
@@ -42,18 +62,6 @@ class SpecialistsController extends Controller
     }
 
     /**
-     * Displays a single Specialists model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Specialists model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -63,7 +71,7 @@ class SpecialistsController extends Controller
         $model = new Specialists();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -82,7 +90,7 @@ class SpecialistsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

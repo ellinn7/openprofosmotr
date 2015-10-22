@@ -19,13 +19,14 @@ use app\models\Procedures2;
 use app\models\Against2;
 use app\models\SpecialistsRequired;
 use app\models\ProceduresRequired;
+use app\models\Specialists;
+use app\models\Procedures;
 
 require_once '../extensions/mpdf60/mpdf.php';
 
 class BlanksController extends Controller
 {
     public $layout='print';
-
 
     public function actionPrint($id)
     {
@@ -51,8 +52,9 @@ class BlanksController extends Controller
             $procedures=Procedures1::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
             if($procedures) {
                 foreach($procedures as $procedure) {
-                    if(((preg_match('/40/',$procedure->name) && preg_match('/лет/ui',$procedure->name) && $model->age<40))
-                    ||(preg_match('/женщин|гинеколог/ui',$procedure->name) && $model->sex=='м')) {
+                    if(((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/старше/ui',$procedure->descr) && $model->age<40))
+                    ||((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/моложе/ui',$procedure->descr) && $model->age>=40))
+                    ||((preg_match('/женщин/ui',$procedure->descr)||(preg_match('/гинеколог/ui',$procedure->name))) && $model->sex=='м')) {
                         continue;
                     }
                     $procedures_arr[]=$procedure->name;
@@ -71,17 +73,18 @@ class BlanksController extends Controller
             $factor_model=Factors2::find()->where(['code'=>$factor])->one();
             if(!$factor_model) {continue;}
             $factors2_arr[]=$factor_model->code.' '.$factor_model->name;
-            $specialists=Specialists2::find()->where(['factor'=>$factor_model->id])->all();
+            $specialists=Specialists2::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
             if($specialists) {
                 foreach($specialists as $specialist) {
                     $specialists_arr[]=$specialist->name;
                 }
             }
-            $procedures=Procedures2::find()->where(['factor'=>$factor_model->id])->all();
+            $procedures=Procedures2::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
             if($procedures) {
                 foreach($procedures as $procedure) {
-                    if(((preg_match('/40/',$procedure->name) && preg_match('/лет/ui',$procedure->name) && $model->age<40))
-                    ||(preg_match('/женщин|гинеколог/ui',$procedure->name) && $model->sex=='м')) {
+                    if(((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/старше/ui',$procedure->descr) && $model->age<40))
+                    ||((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/моложе/ui',$procedure->descr) && $model->age>=40))
+                    ||((preg_match('/женщин/ui',$procedure->descr)||(preg_match('/гинеколог/ui',$procedure->name))) && $model->sex=='м')) {
                         continue;
                     }
                     $procedures_arr[]=$procedure->name;
@@ -97,15 +100,15 @@ class BlanksController extends Controller
         
         $factors1_arr=array_unique($factors1_arr);
         $factors2_arr=  array_unique($factors2_arr);
-        $specialists_arr=self::prepareSpecialists($specialists_arr);
+        $specialists_arr=self::prepareSpecialists($specialists_arr,$model->sex);
         $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex,$model->age);
         $againsts_arr=array_unique($againsts_arr);
         
         $this->pdf([
-            $this->rout($model,$factors1_arr,$factors1_arr,$specialists_arr,$procedures_arr,$againsts_arr),
+            $this->rout($model,$specialists_arr,$procedures_arr,$againsts_arr),
             $this->personal($model),
             $this->passport($model,$factors1_arr,$factors2_arr,$specialists_arr,$procedures_arr),
-            $this->resume($model,$factors1,$factors2),
+            $this->resume($model,$factors1_arr,$factors2_arr),
             $this->bloodclinic_talon($model,$model->talon),
             $this->analysis($model,$factors1,$factors2),
         ]);
@@ -121,13 +124,31 @@ class BlanksController extends Controller
      * @param array $againsts_arr
      * @return array
      */
-    protected function rout($model,$factors1_arr,$factors2_arr,$specialists_arr,$procedures_arr,$againsts_arr)
+    protected function rout($model,$specialists_arr,$procedures_arr,$againsts_arr)
     {
+        $factors_str='';
+        if($model->factors1) {
+            $factors_str.='Прил. 1: '.$model->factors1;
+        }
+        if($model->factors2) {
+            $factors_str.='Прил. 2: '.$model->factors2;
+        }
+        foreach ($specialists_arr as $i => $spec) {
+            $specialist=Specialists::find()->where(['specialist'=>$spec])->one();
+            if($specialist) {
+                $specialists_arr[$i]=$spec.' <b>'.$specialist->place.'</b>';
+            }
+        }
+        foreach ($procedures_arr as $i => $proc) {
+            $procedure=Procedures::find()->where(['procedure'=>$proc])->one();
+            if($procedure) {
+                $procedures_arr[$i]=$proc.' <b>'.$procedure->place.'</b>';
+            }
+        }
         return [
             'html'=>$this->render('rout', [
                 'model' => $model,
-                'factors_str' => $factors1_arr?'прил. 1'.implode(',',$factors1_arr):''
-                    .$factors2_arr?'прил. 2'.implode(',',$factors2_arr):'',
+                'factors_str' => $factors_str,
                 'specialists_str' => implode('<br>',$specialists_arr),
                 'procedures_str' => implode('<br>',$procedures_arr),
                 'againsts_str' => implode('<br>-',$againsts_arr),
@@ -177,17 +198,17 @@ class BlanksController extends Controller
     /**
      * заключение
      * @param obj $model
-     * @param array $factors1
-     * @param array $factors2
+     * @param array $factors1_arr
+     * @param array $factors2_arr
      * @return array
      */
-    protected function resume($model,$factors1,$factors2)
+    protected function resume($model,$factors1_arr,$factors2_arr)
     {
         return [
             'html'=>$this->render('resume',[
                 'model' => $model,
-                'factors1_codes_str' => implode(' , ',$factors1),
-                'factors2_codes_str' => implode(' , ',$factors2),
+                'factors1_str' => implode(' , ',$factors1_arr),
+                'factors2_str' => implode(' , ',$factors2_arr),
             ]),
             'format'=>'A4-L',
         ];
@@ -218,10 +239,10 @@ class BlanksController extends Controller
                 'reticul'=>$this->defineProc($factors1,$factors2,['%етикулоциты%']),
                 'syph'=>$this->defineProc($factors1,$factors2,['%ифилис%']),
                 'nose'=>$this->defineProc($factors1,$factors2,['%носа%','%стафилококк%']),
-                'paras'=>$this->defineProc($factors1,$factors2,['%кал%','%гельм%']),
+                'paras'=>$this->defineProc($factors1,$factors2,['%гельм%']),
                 'honorea'=>$model->sex=='м'?$this->defineProc($factors1,$factors2,['%гонор%']):false,
                 'eritrocit'=>$this->defineProc($factors1,$factors2,['%эритроцит%']),
-                'blood'=>  $this->defineProc($factors1,$factors2,['%илирубин%','%АСТ%','%АЛТ%']),
+                'blood'=>  $this->defineProc($factors1,$factors2,[['%илирубин%','%АСТ%','%АЛТ%']]),
             ]),
             'format'=>'A4-P',
         ];
@@ -232,10 +253,13 @@ class BlanksController extends Controller
      * @param array $arr
      * @return array
      */
-    protected static function prepareSpecialists($arr)
+    protected static function prepareSpecialists($arr,$sex)
     {
         $records=SpecialistsRequired::find()->all();
         foreach ($records as $record) {
+            if(preg_match('/женщин/ui',$record->descr) && $sex=='м') {
+                continue;
+            }
             $arr[]=$record->name;
         }
         $arr=array_unique($arr);
@@ -253,7 +277,7 @@ class BlanksController extends Controller
         $records=  ProceduresRequired::find()->all();
         foreach ($records as $record) {
             if( (preg_match('/женщин/ui',$record->descr) && $sex=='м')
-                ||(preg_match('/40/',$record->descr) && preg_match('/лет/ui',$record->descr) && $age<40)) {
+                ||(preg_match('/40/',$record->descr) && preg_match('/лет/ui',$record->descr) && preg_match('/старше/ui',$record->descr) && $age<40)) {
                 continue;
             }
             $arr[]=$record->name;
@@ -273,13 +297,22 @@ class BlanksController extends Controller
     {
         $proc_cond="and name not like '%*%'";
         foreach ($proc_cond_arr as $el) {
-            $proc_cond.=" and name like '$el'";
+            if(is_array($el)) {
+                $el_str=  implode("' or name like '",$el);
+                $proc_cond.=" and ( name like '$el_str' )";
+            } else {
+                $proc_cond.=" and name like '$el'";
+            }
         }
         foreach ($factors1 as $factor) {
             $factor_model=Factors1::find()->where(['code'=>$factor])->one();
             if($factor_model) {
                 $proc=Procedures1::find()->where("factor=$factor_model->id".$proc_cond)->one();
                 if($proc) {
+                    $procedure=Procedures::find()->where(['procedure'=>$proc->name])->one();
+                    if($procedure&&$procedure->place) {
+                        return $procedure->place;
+                    }
                     return 'каб.';
                 }
             }
@@ -289,6 +322,10 @@ class BlanksController extends Controller
             if($factor_model) {
                 $proc=Procedures2::find()->where("factor=$factor_model->id".$proc_cond)->one();
                 if($proc) {
+                    $procedure=Procedures::find()->where(['procedure'=>$proc->name])->one();
+                    if($procedure&&$procedure->place) {
+                        return $procedure->place;
+                    }
                     return 'каб.';
                 }
             }
