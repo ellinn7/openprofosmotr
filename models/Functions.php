@@ -47,31 +47,72 @@ class Functions
     {
         $data=\PHPExcel_IOFactory::load($filename);
         if(!$data) {return false;}
-        $data->setActiveSheetIndex(1);
+        if($data->getSheetCount()==2) {
+            $sheetIndex=1;
+        } elseif($data->getSheetCount()==4) {
+            $sheetIndex=3;
+        } else {
+            return false;
+        }
+        $data->setActiveSheetIndex($sheetIndex);
         $aSheet = $data->getActiveSheet();
 
         //этот массив будет содержать массивы содержащие в себе значения ячеек каждой строки
         $list = [];
         //получим итератор строки и пройдемся по нему циклом
         foreach($aSheet->getRowIterator() as $i => $row){
-            if($i<2||$i>2&&$i<9) {
-                continue;
+            
+            $list_row = [];
+            
+            if($sheetIndex==1) {
+                if($i<2||$i>2&&$i<9) {
+                    continue;
+                }
+            } elseif($sheetIndex==3) {
+                if($i<6) {
+                    continue;
+                }elseif($i==6) {
+                    $list[]=self::arrFirmRowFromTemplate3($filename);
+                }
             }
             //получим итератор ячеек текущей строки
             $cellIterator = $row->getCellIterator();
             //пройдемся циклом по ячейкам строки
             //этот массив будет содержать значения каждой отдельной строки
-            $row = [];
             foreach($cellIterator as $cell){
+                
+                if(\PHPExcel_Shared_Date::isDateTime($cell)) {
+                    $value=$cell->getValue();
+                    $value=date('d.m.Y',\PHPExcel_Shared_Date::ExcelToPHP($value));
+                    $cell->setValue($value);
+                }
                 //заносим значения ячеек одной строки в отдельный массив
-                $row[]=$cell->getCalculatedValue();
+                $list_row[]=$cell->getCalculatedValue();
             }
-            $list[]=$row; //заносим массив со значениями ячеек отдельной строки в "общий массв строк"
+            $list[]=$list_row; //заносим массив со значениями ячеек отдельной строки в "общий массив строк"
         }
         return $list;
     }
     
-    /**
+    protected static function arrFirmRowFromTemplate3($filename)
+    {
+        $arr=[];
+        
+        $firm_data=\PHPExcel_IOFactory::load($filename);
+        $firm_data->setActiveSheetIndex(1);
+        $firm_aSheet = $firm_data->getActiveSheet();
+        foreach($firm_aSheet->getRowIterator() as $i => $row){
+            if($i==3) {
+                $firm_cellIterator = $row->getCellIterator();
+                foreach($firm_cellIterator as $firm_cell){
+                    $arr[]=$firm_cell->getCalculatedValue();
+                }
+                return $arr;
+            }
+        }
+    }
+
+        /**
      * formatting sex field
      * @param type $str
      * @return string
@@ -181,35 +222,35 @@ class Functions
     {
         foreach ($data as $i=>$row) {
             if($i==0) {
-                $firm=$row[4];
+                $firm=$row[4].'';
                 continue;
             }
             $data_arr=[
                 'firm'=>$firm,
-                'snils'=>$row[1],
-                'surname'=>$row[2],
-                'name'=>$row[3],
-                'patron'=>$row[4],
+                'snils'=>$row[1].'',
+                'surname'=>$row[2].'',
+                'name'=>$row[3].'',
+                'patron'=>$row[4].'',
                 'sex'=> self::defineSex($row[5]),
-                'spec'=>$row[6],
-                'phone'=>$row[7],
+                'spec'=>$row[6].'',
+                'phone'=>$row[7].'',
                 'birthday'=> self::formatDate($row[8]),
-                'factors1'=> $row[9],
-                'factors2'=> $row[10],
-                'seniority'=>$row[11],
-                'dep'=>$row[12],
-                'prof'=>$row[13],
-                'addresse_reg'=>$row[14],
-                'addresse_fact'=>$row[15],
-                'disability'=>$row[16],
-                'passport_series'=> self::toInt($row[17]),
-                'passport_number'=> self::toInt($row[18]),
+                'factors1'=> $row[9].'',
+                'factors2'=> $row[10].'',
+                'seniority'=>$row[11].'',
+                'dep'=>$row[12].'',
+                'prof'=>$row[13].'',
+                'addresse_reg'=>$row[14].'',
+                'addresse_fact'=>$row[15].'',
+                'disability'=>$row[16].'',
+                'passport_series'=> self::toInt($row[17]).'',
+                'passport_number'=> self::toInt($row[18]).'',
                 'passport_given_date'=> self::formatDate($row[19]),
-                'passport_given_who'=>$row[20],
-                'insurance_number'=>$row[21],
-                'insurance_company'=>$row[22],
-                'living_lpu'=>$row[23],
-                'descr'=>$row[24],
+                'passport_given_who'=>$row[20].'',
+                'insurance_number'=>$row[21].'',
+                'insurance_company'=>$row[22].'',
+                'living_lpu'=>$row[23].'',
+                'descr'=>$row[24].'',
                 'file'=>$filename,
                 'talon'=>$talon,
             ];
