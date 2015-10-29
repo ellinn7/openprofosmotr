@@ -1,7 +1,7 @@
 <?php
 
 namespace app\models;
-
+use app\models\Firms;
 use Yii;
 
 /**
@@ -35,6 +35,9 @@ use Yii;
  * @property string $firm
  * @property string $file
  * @property integer $talon
+ * @property integer $firm_id
+ * 
+ * @property Firms $firms0
  */
 class Patients extends \yii\db\ActiveRecord
 {   
@@ -55,7 +58,7 @@ class Patients extends \yii\db\ActiveRecord
             [['surname','name','patron','snils','spec','phone','factors1','factors2','seniority','dep','prof','addresse_reg','addresse_fact','disability','passport_given_who','insurance_company','insurance_number','living_lpu','descr','firm','file'],'string'],
             [['sex','surname','name','patron','birthday','firm'],'required'],
             [['birthday','passport_given_date'],'safe'],
-            [['passport_series','passport_number','talon'],'integer'],
+            [['passport_series','passport_number','talon','firm_id'],'integer'],
             [['sex'],'string','max'=>1,'encoding'=>'UTF-8']
         ];
     }
@@ -126,4 +129,13 @@ class Patients extends \yii\db\ActiveRecord
         $age=$now->diff($birthday);
         return $age->format('%y');
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFirms0()
+    {
+        return $this->hasOne(Firms::className(), ['id' => 'firm_id']);
+    }
+
 }

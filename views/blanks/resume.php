@@ -5,8 +5,7 @@ $this->title = 'Заключение периодического медицин
 
 <div class="blank percent100">
     <div class="h2t to-cut-right percent50 div-in-line">
-        <div class="text-center">ООО Медицинский центр Аксион
-        <br> (ООО "Медицинский центр "Аксион")</div>
+        <div class="text-center">ООО Медицинский центр Аксион</div>
         <div>Код ОГРН &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1041800278706</div>
         <div class="text-center"><b>Заключение периодического медицинского осмотра</b></div>
         <div class="text-center">от __________________________</div>
@@ -22,7 +21,7 @@ $this->title = 'Заключение периодического медицин
         <div>8. Согласно результатам проведенного периодического медицинского осмотра (обследования): <b>имеет/ не имеет</b> медицинских противопоказаний к работе с вредными и/или опасными веществами и производственными факторами, <b>заключение не дано</b> (нужное подчеркнуть).</div>
         <div class="percent100">
             <div class="percent40 div-in-line">
-                Председатель врачебной комиссии
+                Председатель врачебной комиссии М.П.
             </div>
             <div class="percent40 div-in-line">
                 _______________________________
@@ -30,8 +29,7 @@ $this->title = 'Заключение периодического медицин
         </div>
     </div>
     <div class="percent50 div-in-line redline">
-        <h4 class="h4-blank text-center">ООО Медицинский центр Аксион
-        <br> (ООО "Медицинский центр "Аксион")</h4>
+        <h4 class="text-center">ООО Медицинский центр Аксион</h4>
         <div>Код ОГРН &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1041800278706</div>
         <div class="text-center"><b>Заключение периодического медицинского осмотра</b></div>
         <div>1. Ф.И.О.: <b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>

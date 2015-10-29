@@ -39,7 +39,7 @@ class PatientsSearch extends Patients
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$firm_id=false)
     {
         $query = Patients::find()->orderBy('id desc');
 
@@ -62,6 +62,7 @@ class PatientsSearch extends Patients
             'passport_number' => $this->passport_number,
             'passport_given_date' => $this->passport_given_date,
             'passport_given_date' => $this->talon,
+            'firm_id' => $firm_id?$firm_id:$this->firm_id,
         ]);
 
         $query->andFilterWhere(['like', 'surname', $this->surname])

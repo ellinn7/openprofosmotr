@@ -13,6 +13,9 @@ class UploadForm extends Model
      * @var UploadedFile|Null file attribute
      */
     public $file;
+    /**
+     * @var 1|0 print or not talon attribute
+     */
     public $talon=1;
 
     /**

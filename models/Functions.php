@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\models\Patients;
+use app\models\Firms;
 
 /**
  * common functions
@@ -223,6 +224,7 @@ class Functions
         foreach ($data as $i=>$row) {
             if($i==0) {
                 $firm=$row[4].'';
+                $firm_id=Firms::add(['firm'=>$firm,'file'=>$filename]);
                 continue;
             }
             $data_arr=[
@@ -253,9 +255,11 @@ class Functions
                 'descr'=>$row[24].'',
                 'file'=>$filename,
                 'talon'=>$talon,
+                'firm_id'=>$firm_id,
             ];
             Patients::add($data_arr);
         }
+        return $firm_id;
     }
 
     /**
@@ -267,8 +271,7 @@ class Functions
         if(is_string($data)) {
             return $data;
         }
-        self::saveData($data,$filename,$talon);
-        return 1;
+        return self::saveData($data,$filename,$talon);
     }
     
 }

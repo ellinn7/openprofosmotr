@@ -8,6 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Пациенты';
+$this->params['breadcrumbs'][] = ['label' => 'Предприятия', 'url' => ['//firms/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="patients-index">
@@ -15,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Загрузка файла', ['upload'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Ввод пациента', ['create'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Печать бланков', ['//blanks/print','firm'=>$firm_id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Ввод пациента', ['//patients/create','firm_id'=>$firm_id], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= GridView::widget([
@@ -50,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'class' => 'yii\grid\ActionColumn',
+                'controller' => 'patients',
                 'template' => '{view}{update}{delete}',
             ],
         ],

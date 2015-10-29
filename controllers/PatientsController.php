@@ -13,6 +13,7 @@ use yii\web\UploadedFile;
 use app\models\Functions;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\models\Firms;
 
 /**
  * PatientsController implements the CRUD actions for Patients model.
@@ -32,14 +33,14 @@ class PatientsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','view','create','update','delete','upload'],
+                        'actions' => ['index','view','create','update','delete','upload','firms'],
                         'allow' => true,
                         'matchCallback' => function ($rule, $action) {
                             return Yii::$app->user->identity;
                         }
                     ],
                     [
-                        'actions' => ['index','view','create','update','delete','upload'],
+                        'actions' => ['index','view','create','update','delete','upload','firms'],
                         'denyCallback' => function ($rule, $action) {
                             throw new ForbiddenHttpException('Авторизуйтесь, чтобы начать пользоваться системой.');
                         }
@@ -53,7 +54,7 @@ class PatientsController extends Controller
      * Lists all Patients models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($firm_id=false)
     {
         $searchModel = new PatientsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -61,6 +62,7 @@ class PatientsController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'firm_id'=>$firm_id,
         ]);
     }
 
@@ -81,10 +83,13 @@ class PatientsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($firm_id)
     {
         $model = new Patients();
-
+        $firm=Firms::find()->where(['id'=>$firm_id])->one();
+        $model->firm_id=$firm->id;
+        $model->firm=$firm->firm;
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -121,9 +126,10 @@ class PatientsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model=$this->findModel($id);
+        $firm_id=$model->firm_id;
+        $model->delete();
+        return $this->redirect(['//firms/view','id'=>$firm_id]);
     }
         
     /**
@@ -145,10 +151,10 @@ class PatientsController extends Controller
             
             if ($model->validate() && $model->file->saveAs('/tmp/'.$filename)) {
                 $result=Functions::loadData('/tmp/'.$filename,$model->talon);
-                if($result==1) {
+                if(is_int($result)) {
                     $model->file->saveAs('../uploads/'.$filename);
                     unlink('/tmp/'.$filename);
-                    $this->redirect(['index']);
+                    $this->redirect(['//firms/view','id'=>$result]);
                 } else {
                     unlink('/tmp/'.$filename);
                     $model->addError('file',$result);

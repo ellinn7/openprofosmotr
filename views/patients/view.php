@@ -7,8 +7,9 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Patients */
 
 $this->title = 'Пациенты';
-$this->params['breadcrumbs'][] = ['label' => 'Пациенты', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->firm.' - '.$model->surname.' '.$model->name.' '.$model->patron;
+$this->params['breadcrumbs'][] = ['label' => 'Предприятия','url'=>['//firms/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Пациенты - '.$model->firm, 'url' => ['//firms/view','id'=>$model->firm_id]];
+$this->params['breadcrumbs'][] = $model->surname.' '.$model->name.' '.$model->patron;
 ?>
 <div class="patients-view">
 
