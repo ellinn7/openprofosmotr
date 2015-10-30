@@ -54,4 +54,5 @@ $this->params['breadcrumbs'][] = $model->surname.' '.$model->name.' '.$model->pa
         ]) ?>
     </p>
     
+    
 </div>

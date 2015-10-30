@@ -15,7 +15,7 @@ $this->title = 'OpenProfOsmotr';
                 <h2>Справочники</h2>
                 <p>
                     <?php
-                    echo Html::a('Предприятия',['firms/index'],['class' => 'btn btn-primary']);
+                    echo Html::a('Загруженные файлы',['firms/index'],['class' => 'btn btn-primary']);
                     echo '<br>';
                     echo '<br>';
                     echo Html::a('Специалисты',['specialists/index']);

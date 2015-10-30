@@ -173,7 +173,7 @@ class Functions
         return 1;
     }
 
-    protected static function validateData($filename)
+    protected static function prepareData($filename)
     {
         $data=self::loadFromXls($filename);
         if(!$data) {
@@ -267,7 +267,7 @@ class Functions
      */
     public static function loadData($filename,$talon)
     {
-        $data=self::validateData($filename);
+        $data=self::prepareData($filename);
         if(is_string($data)) {
             return $data;
         }

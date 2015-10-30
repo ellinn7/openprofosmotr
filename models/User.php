@@ -9,6 +9,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     public $password;
     public $authKey;
     public $accessToken;
+    public $firm;
 
     private static $users = [
         '100' => [
@@ -17,6 +18,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             'password' => 'admin',
             'authKey' => 'test100key',
             'accessToken' => '100-token',
+            'firm' => 'Медицинский центр "Аксион"',
         ],
         '101' => [
             'id' => '101',
@@ -24,6 +26,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             'password' => '123',
             'authKey' => 'test101key',
             'accessToken' => '101-token',
+            'firm' => 'МУЗ ГП №1',
         ],
     ];
 

@@ -1,7 +1,6 @@
 <columns column-count="2" vAlign="J" column-gap="0.1" />
 <div class="blank percent100">
-    <p class="text-center">ООО Медицинский центр Аксион
-    <br>(ООО "Медицинский центр "Аксион")</p>
+    <p class="text-center"><?=$firm?></p>
     <div>Код ОГРН &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1041800278706</div>
     <h6 class="text-center">ПАСПОРТ ЗДОРОВЬЯ РАБОТНИКА № __________________ "____" ____________________20____г.</h6>
     1. Фамилия <b><?=$model->surname?></b>
@@ -78,28 +77,7 @@
     <div>
         9. Условия труда (в настоящее время): <?='<u>Прил 1:</u> <b>'.$model->factors1.'</b> <u>Прил 2:</u> <b>'.$model->factors2.'</b>'?>
     </div>
-    
-    <?php /*
-    <table class="common-table percent100">
-        <thead>
-            <tr>
-                <td class="percent85">Наименование производственного фактора, виды работ с указанием пункта</td>
-                <td class="percent15">Стаж работы с фактором</td>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-//            foreach ($factors1_arr as $factor) {
-//                echo "<tr><td>$factor</td><td></td></tr>";
-//            }
-//            foreach ($factors2_arr as $factor) {
-//                echo "<tr><td>$factor</td><td></td></tr>";
-//            }
-            ?>
-        </tbody>
-    </table>
-    */?>
-    
+        
     <div>
         10. Профессиональный маршрут до начала работ в данном виде работ (для предварительного медицинского осмотра (обследования):
     </div>
@@ -229,19 +207,13 @@
             <tr><td>13</td><td></td><td></td><td></td></tr>
             <tr><td>14</td><td></td><td></td><td></td></tr>
             <tr><td>15</td><td></td><td></td><td></td></tr>
-            <?php
-//            $num=0;
-//            foreach ($procedures_arr as $procedure) {
-//                echo "<tr><td>".++$num."</td><td>$procedure</td><td></td><td></td></tr>";
-//            }
-            ?>
         </tbody>
     </table>
     
     <h6 class="text-center">ЗАКЛЮЧЕНИЕ ПРЕДВАРИТЕЛЬНОГО (ПЕРИОДИЧЕСКОГО) МЕДИЦИНСКОГО ОСМОТРА</h6>
     
     <div class="text-justify">Согласно результатам проведенного предварительного (периодического) медицинского обследования: не имеет/имеет медицинские противопоказания к работе с вредными и/или опасными веществами производственными факторами, заключение не дано</div>
-    <div class="text-down text-center undertext">(нужное подчеркнуть)</div>
+    <div class="text-center undertext">(нужное подчеркнуть)</div>
     
     <table class="percent100">
         <thead>

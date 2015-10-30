@@ -41,7 +41,7 @@ class PatientsSearch extends Patients
      */
     public function search($params,$firm_id=false)
     {
-        $query = Patients::find()->orderBy('id desc');
+        $query = Patients::find()->orderBy('surname');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

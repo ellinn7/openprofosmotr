@@ -38,16 +38,7 @@
                 </tr>
             </tbody>
         </table>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <div class="text-center">
             "____"_________________________<?= date('Y')?> г.
         </div>
@@ -66,7 +57,7 @@
             <div class="text-left div-in-line percent60">
                 Министерство <br>
                 Здравоохранения <br>
-                <p class="font80percent">ООО "Медицинский центр "Аксион"</p>
+                <p class="font80percent"><?=$firm?></p>
             </div>
             <div class="text-right percent40 div-in-line font80percent">
                 Медицинская документация <br>
@@ -75,8 +66,8 @@
                 Минздравом <br>
                 №1030 04.10.80 г.
             </div>
-            <div class="percent20 div-in-line"> Лаборатория </div>
-            <div class="percent80 div-in-line bottomline"></div>
+            <div class="percent20 div-in-line">Лаборатория </div>
+            <div class="percent80 div-in-line bottomline">&nbsp;</div>
             <div class="text-center">АНАЛИЗ МОЧИ №______</div>
             <div class="text-center">
                 "____"_________________________<?= date('Y')?> г.
@@ -218,7 +209,7 @@
                     <div class="percent70 div-in-line bottomline font80percent">&nbsp;</div>
                 </div>
             </div>
-                    
+            <br><br>
             <div class="text-center">
                 "____"_________________________<?= date('Y')?> г.
             </div>

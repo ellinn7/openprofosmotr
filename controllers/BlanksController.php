@@ -21,13 +21,23 @@ use app\models\SpecialistsRequired;
 use app\models\ProceduresRequired;
 use app\models\Specialists;
 use app\models\Procedures;
+use Yii;
 
 require_once '../extensions/mpdf60/mpdf.php';
 
 class BlanksController extends Controller
 {
+    /**
+     * public layout
+     */
     public $layout='print';
 
+
+    /**
+     * @param integer $id
+     * @param integer $firm
+     * @return boolean
+     */
     public function actionPrint($id=false,$firm=false)
     {
         if($firm) {
@@ -43,6 +53,12 @@ class BlanksController extends Controller
             return false;
         }
         
+        $this->_print($models);
+        
+    }
+    
+    protected function _print($models)
+    {
         $files_to_print=[];
         
         foreach ($models as $model) {
@@ -124,12 +140,12 @@ class BlanksController extends Controller
             $files_to_print[]=$this->passport($model,$factors1_arr,$factors2_arr,$specialists_arr,$procedures_arr);
             $files_to_print[]=$this->resume($model,$factors1_arr,$factors2_arr);
             $files_to_print[]=$this->bloodclinic_talon($model,$model->talon);
-            $files_to_print[]=$this->analysis($model,$factors1,$factors2);
+            $files_to_print[]=$this->analysis($model,$factors1,$factors2);            
         }
         
         $this->pdf($files_to_print);
     }
-    
+
     /**
      * профмаршрут
      * @param object $model
@@ -162,7 +178,7 @@ class BlanksController extends Controller
             }
         }
         return [
-            'html'=>$this->render('rout', [
+            'html'=>$this->renderPartial('rout', [
                 'model' => $model,
                 'factors_str' => $factors_str,
                 'specialists_str' => implode('<br>',$specialists_arr),
@@ -181,8 +197,9 @@ class BlanksController extends Controller
     protected function personal($model)
     {
         return [
-            'html'=>  $this->render('personal',[
+            'html'=>  $this->renderPartial('personal',[
                 'model' => $model,
+                'firm' => Yii::$app->user->identity->firm,
             ]),
             'format'=>'A4-P',
         ];
@@ -200,12 +217,13 @@ class BlanksController extends Controller
     protected function passport($model,$factors1_arr,$factors2_arr,$specialists_arr,$procedures_arr)
     {
         return [
-            'html'=>  $this->render('passport',[
+            'html'=>  $this->renderPartial('passport',[
                 'model' => $model,
                 'factors1_arr' => $factors1_arr,
                 'factors2_arr' => $factors2_arr,
                 'specialists_arr' => $specialists_arr,
                 'procedures_arr' => $procedures_arr,
+                'firm' => Yii::$app->user->identity->firm,
             ]),
             'format'=>'A4-L',
         ];
@@ -221,10 +239,11 @@ class BlanksController extends Controller
     protected function resume($model,$factors1_arr,$factors2_arr)
     {
         return [
-            'html'=>$this->render('resume',[
+            'html'=>$this->renderPartial('resume',[
                 'model' => $model,
                 'factors1_str' => implode(' , ',$factors1_arr),
                 'factors2_str' => implode(' , ',$factors2_arr),
+                'firm' => Yii::$app->user->identity->firm,
             ]),
             'format'=>'A4-L',
         ];
@@ -239,9 +258,10 @@ class BlanksController extends Controller
     protected function bloodclinic_talon($model,$talon)
     {
         return [
-            'html'=>$this->render('bloodclinic_talon',[
+            'html'=>$this->renderPartial('bloodclinic_talon',[
                 'model'=>$model,
-                'talon'=>$talon
+                'talon'=>$talon,
+                'firm' => Yii::$app->user->identity->firm,
             ]),
             'format'=>'A4-L',
         ];
@@ -250,8 +270,9 @@ class BlanksController extends Controller
     protected function analysis($model,$factors1,$factors2)
     {
         return [
-            'html'=>$this->render('analysis',[
+            'html'=>$this->renderPartial('analysis',[
                 'model'=>$model,
+                'firm' => Yii::$app->user->identity->firm,
                 'reticul'=>$this->defineProc($factors1,$factors2,['%етикулоциты%']),
                 'syph'=>$this->defineProc($factors1,$factors2,['%ифилис%']),
                 'nose'=>$this->defineProc($factors1,$factors2,['%носа%','%стафилококк%']),
@@ -356,16 +377,15 @@ class BlanksController extends Controller
      */
     protected function pdf($pages)
     {
-        require_once '../extensions/mpdf60/mpdf.php';
-        
-        $pdf=new \mPDF('',$pages[0]['format'],0,'',5,5,8,5);        
-        foreach($pages as $page) {            
+        require_once '../extensions/mpdf60/mpdf.php';        
+        $pdf=new \mPDF('',$pages[0]['format'],0,'',5,5,8,5);
+        $css=  file_get_contents('../web/css/print.css');
+        $pdf->writeHtml("<style>{$css}</style>");
+        foreach($pages as $i => $page) {
             if($pdf->y>13) {
                 $pdf->AddPageByArray(['newformat'=>$page['format']]); //A4-P
             }
             $pdf->writeHtml($page['html']);
-            
-            
         }        
         $pdf->Output("output.pdf","I");
     }

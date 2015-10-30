@@ -3,16 +3,16 @@
 ?>
 <div class="blank percent50 redline">
     
-    <div class="h2w to-cut-right">
+    <div class="h2w to-cut-right to-cut-bottom">
         <div class="percent50 div-in-line">
             <div class="undertext">Периодический осмотр</div>
             <p>Орг.: <b><?=$model->firm?> <?=$model->dep?></b></p>
-            <div class="redline">
+            <div class="redline font80percent">
                 Министерство здравоохранения
-                <div class="font80percent">ООО "Медицинский центр "Аксион"</div>
+                <br><?=$firm?>
             </div>
         </div>
-        <div class="percent50 div-in-line text-right">
+        <div class="percent50 div-in-line text-right font50percent">
             Медицинская документация <br>
             Форма № 45 <br>
             Утверждена Минздравом СССР <br>
@@ -20,10 +20,15 @@
         </div>
         <div class="text-center">КЛИНИЧЕСКИЙ АНАЛИЗ КРОВИ №______</div>
         <div class="redline"> Ф.И.О.: <b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b> </div>
-        <div class="percent33 div-in-line">В учреждение <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></div>
-        <div class="percent33 div-in-line">Корпус <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></div>
-        <div class="percent33 div-in-line">Отделение <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></div>
-        <div class="percent100">Для врача <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> </div>
+        <div class="percent100">
+            <div class="percent15 div-in-line">В учреждение</div>
+            <div class="percent25 div-in-line bottomline">&nbsp;</div>
+            <div class="percent10 div-in-line">Корпус</div>
+            <div class="percent15 div-in-line bottomline">&nbsp;</div>
+            <div class="percent15 div-in-line">Отделение</div>
+            <div class="percent20 div-in-line bottomline">&nbsp;</div>
+        </div>
+        <div class="percent100">Для врача</div>
         <table class="common-table text-center percent100 bottomspace">
             <thead>
                 <tr>
@@ -51,7 +56,7 @@
                     <td class="font80percent">250 - 400 тыс.</td>
                     <td></td>
                 </tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </tbody>
         </table>
         <table class="common-table text-center percent100 bottomspace">
@@ -97,32 +102,25 @@
                     <td class="font80percent">360-640</td>
                     <td></td>
                 </tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </tbody>
         </table>
         <table class="common-table percent100 text-center bottomspace">
             <thead>
                 <tr>
-                    <td></td>
-                    <td class="percent30"></td>
-                    <td></td>
-                    <td></td>
-                    <td class="percent20"></td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
                     <td rowspan="2">Анизоцитоз</td>
-                    <td rowspan="2"></td>
+                    <td rowspan="2" class="percent30"></td>
                     <td rowspan="2" class="font80percent">Зернистость эритроцитов</td>
                     <td class="font80percent">мин</td>
-                    <td></td>
+                    <td class="percent20"></td>
                 </tr>
                 <tr>
                     <td class="font80percent">макс</td>
                     <td></td>
                 </tr>
+            </thead>
+            <tbody>
                 <tr>
                     <td>Пойкилоцитоз</td>
                     <td></td>
@@ -143,16 +141,12 @@
                 </tr>
             </tbody>
         </table>
-        <table class="common-table percent100 bottomspace">
-            <head>
-                <tr>
-                    <td>Анализ производил</td>
-                    <td class="percent50"></td>
-                    <td>Дата</td>
-                    <td class="percent20"></td>
-                </tr>
-            </thead>
-        </table>
+        <div class="percent100">
+            <div class="percent30 div-in-line">Анализ производил</div>
+            <div class="percent33 div-in-line bottomline">&nbsp;</div>
+            <div class="percent15 div-in-line">Дата</div>
+            <div class="percent20 div-in-line bottomline">&nbsp;</div>
+        </div>
     </div>
     
     <?php if($talon) {?>

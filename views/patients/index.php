@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
             'firm',
             [
                 'attribute'=>'id',
@@ -56,5 +57,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+    
+    <p>
+        <?= Html::a('Удалить', ['//firms/delete', 'id' => $firm_id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Вы уверены, что хотите удалить это предприятие вместе со всеми пациентами?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
 
 </div>
