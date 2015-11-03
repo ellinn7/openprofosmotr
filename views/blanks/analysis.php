@@ -411,7 +411,7 @@
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$paras?></div>
         <p>&nbsp;</p>
-        <p class="text-center"><b>Анализ кала на яйца гельминтов</b></p>
+        <p class="text-center"><b>Анализ кала на яйца гельминтов и энтеробиоз</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>

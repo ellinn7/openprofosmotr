@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\PatientsSearch;
+use app\models\Patients;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * FirmsController implements the CRUD actions for Firms model.
@@ -22,6 +25,24 @@ class FirmsController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index','view','create','update','delete','toprint'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity;
+                        }
+                    ],
+                    [
+                        'actions' => ['index','view','create','update','delete','toprint'],
+                        'denyCallback' => function ($rule, $action) {
+                            throw new ForbiddenHttpException('Авторизуйтесь, чтобы начать пользоваться системой.');
+                        }
+                    ],
                 ],
             ],
         ];
@@ -106,8 +127,35 @@ class FirmsController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
+    }
+    /**
+     * dividing patients to groups to print
+     * @param type $id
+     * @return type
+     */
+    public function actionToprint($id)
+    {
+        $model=$this->findModel($id);
+        $patients=Patients::find()->where(['firm_id'=>$id])->orderBy('surname,name,patron')->all();
+        $pat_groups=$group=$group_ids=[];
+        $i=0;
+        foreach ($patients as $j=>$patient) {
+            $group[]=$patient;
+            $group_ids[]=$patient['id'];
+            ++$i;
+            if($i==10 || $j==count($patients)-1) {
+                $pat_groups[]=[$group,$group_ids];
+                $group=[];
+                $group_ids=[];
+                $i=0;
+            }
+        }
+        return $this->render('toprint', [
+            'model' => $model,
+            'pat_groups' => $pat_groups,
+        ]);
+    
     }
 
     /**

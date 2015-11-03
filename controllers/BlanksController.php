@@ -38,12 +38,14 @@ class BlanksController extends Controller
      * @param integer $firm
      * @return boolean
      */
-    public function actionPrint($id=false,$firm=false)
+    public function actionPrint($id=false,$firm=false,array $ids=[])
     {
         if($firm) {
             $condition=['firm_id'=>$firm];
         } elseif($id) {
             $condition=['id'=>$id];
+        } elseif($ids) {
+            $condition=['id'=>$ids];
         } else {
             return false;
         }
@@ -56,18 +58,14 @@ class BlanksController extends Controller
         $this->_print($models);
         
     }
-    
+
     protected function _print($models)
     {
         $files_to_print=[];
         
         foreach ($models as $model) {
             
-            $factors1_arr=[];
-            $factors2_arr=[];
-            $specialists_arr=[];
-            $procedures_arr=[];
-            $againsts_arr=[];
+            $factors1_arr=$factors2_arr=$specialists_arr=$procedures_arr=$againsts_arr=$analysis=[];
         
             $factors1=explode(',',$model->factors1);
             foreach ($factors1 as $factor) {
@@ -86,6 +84,10 @@ class BlanksController extends Controller
                         if(((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/старше/ui',$procedure->descr) && $model->age<40))
                         ||((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/моложе/ui',$procedure->descr) && $model->age>=40))
                         ||((preg_match('/женщин/ui',$procedure->descr)||(preg_match('/гинеколог/ui',$procedure->name))) && $model->sex=='м')) {
+                            continue;
+                        }
+                        if(preg_match('/анализ/ui',$procedure->name)) {
+                            $analysis[]=$procedure->name;
                             continue;
                         }
                         $procedures_arr[]=$procedure->name;
@@ -118,6 +120,10 @@ class BlanksController extends Controller
                         ||((preg_match('/женщин/ui',$procedure->descr)||(preg_match('/гинеколог/ui',$procedure->name))) && $model->sex=='м')) {
                             continue;
                         }
+                        if(preg_match('/анализ/ui',$procedure->name)) {
+                            $analysis[]=$procedure->name;
+                            continue;
+                        }
                         $procedures_arr[]=$procedure->name;
                     }
                 }
@@ -132,7 +138,7 @@ class BlanksController extends Controller
             $factors1_arr=array_unique($factors1_arr);
             $factors2_arr=  array_unique($factors2_arr);
             $specialists_arr=self::prepareSpecialists($specialists_arr,$model->sex);
-            $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex,$model->age);
+            $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex,$model->age,$analysis);
             $againsts_arr=array_unique($againsts_arr);
             
             $files_to_print[]=$this->rout($model,$specialists_arr,$procedures_arr,$againsts_arr);
@@ -294,13 +300,16 @@ class BlanksController extends Controller
     {
         $records=SpecialistsRequired::find()->all();
         foreach ($records as $record) {
-            if(preg_match('/женщин/ui',$record->descr) && $sex=='м') {
+            if(preg_match('/женщин/ui',$record->descr) && $sex=='м' ||
+                    preg_match('/(нарколог|психиатр)/ui',$record->name)) {
                 continue;
             }
             $arr[]=$record->name;
         }
         $arr=array_unique($arr);
         sort($arr);
+        $arr[]='Нарколог';
+        $arr[]='Психиатр';
         return $arr;
     }
     
@@ -309,7 +318,7 @@ class BlanksController extends Controller
      * @param array $arr
      * @return array
      */
-    protected static function prepareProcedures($arr,$sex,$age)
+    protected static function prepareProcedures($arr,$sex,$age,$analysis)
     {
         $records=  ProceduresRequired::find()->all();
         foreach ($records as $record) {
@@ -317,10 +326,18 @@ class BlanksController extends Controller
                 ||(preg_match('/40/',$record->descr) && preg_match('/лет/ui',$record->descr) && preg_match('/старше/ui',$record->descr) && $age<40)) {
                 continue;
             }
+            if(preg_match('/анализ/ui',$record->name)) {
+                $analysis[]=$record->name;
+                continue;
+            }
             $arr[]=$record->name;
         }
         $arr=array_unique($arr);
         sort($arr);
+        $analysis=  array_unique($analysis);
+        foreach($analysis as $analys) {
+            $arr[]=$analys;
+        }
         return $arr;
     }
     

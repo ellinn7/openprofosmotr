@@ -33,14 +33,14 @@ class PatientsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','view','create','update','delete','upload','firms'],
+                        'actions' => ['index','view','create','update','delete','upload'],
                         'allow' => true,
                         'matchCallback' => function ($rule, $action) {
                             return Yii::$app->user->identity;
                         }
                     ],
                     [
-                        'actions' => ['index','view','create','update','delete','upload','firms'],
+                        'actions' => ['index','view','create','update','delete','upload'],
                         'denyCallback' => function ($rule, $action) {
                             throw new ForbiddenHttpException('Авторизуйтесь, чтобы начать пользоваться системой.');
                         }
@@ -163,7 +163,7 @@ class PatientsController extends Controller
         }
         return $this->render('upload', ['model' => $model]);
     }
-
+    
     /**
      * Finds the Patients model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

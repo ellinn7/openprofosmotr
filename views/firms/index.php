@@ -27,6 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'firm',
+            [
+                'attribute'=>'id',
+                'value'=> function($model) {
+                    return Html::a('Бланки',['toprint','id'=>$model->id]);
+                },
+                'format'=>'raw',
+                'header'=>'Печать бланков',
+            ],
             'date',
             'file',
             [
