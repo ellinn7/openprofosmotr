@@ -153,7 +153,8 @@
     
     <div class="h2w to-cut-right">
     
-        <p class="font70percent"><?=$model->firm?> <?=$model->dep?></p>
+        <div class="div-in-line font70percent percent50"><?=$model->firm?> <?=$model->dep?></div>
+        <div class="div-in-line div-right percent50 font70percent"><?=$firm?></div>
         <div class="percent100">
             <div class="percent75 text-right div-in-line font70percent">
                 <b>Талон амбулаторного пациента №____________

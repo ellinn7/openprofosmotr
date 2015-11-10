@@ -136,7 +136,7 @@ class BlanksController extends Controller
             }
         
             $factors1_arr=array_unique($factors1_arr);
-            $factors2_arr=  array_unique($factors2_arr);
+            $factors2_arr=array_unique($factors2_arr);
             $specialists_arr=self::prepareSpecialists($specialists_arr,$model->sex);
             $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex,$model->age,$analysis);
             $againsts_arr=array_unique($againsts_arr);
@@ -190,6 +190,7 @@ class BlanksController extends Controller
                 'specialists_str' => implode('<br>',$specialists_arr),
                 'procedures_str' => implode('<br>',$procedures_arr),
                 'againsts_str' => implode('<br>-',$againsts_arr),
+                'firm' => Yii::$app->user->identity->firm,
             ]),
             'format'=>'A4-L',
         ];

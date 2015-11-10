@@ -1,6 +1,7 @@
 <div class="blank percent100 h2t">
     <div class="h2t to-cut-right div-in-line percent50">
-        <p>Орг.:<b><?=$model->firm?></b></p>
+        <div class="div-in-line percent50">Орг.:<b><?=$model->firm?></b></div>
+        <div class="div-in-line div-right percent50"><?=$firm?></div>
         <h4 class="text-center">Проф.маршрут</h4>
         <p class="h4-blank"><b><?=$model->surname.' '.$model->name.' '.$model->patron?></b></p>
         <div class="percent50 div-in-line">

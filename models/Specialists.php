@@ -19,7 +19,7 @@ class Specialists extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return Yii::$app->user->identity->specialists;
+        return 'specialists';
     }
 
     /**

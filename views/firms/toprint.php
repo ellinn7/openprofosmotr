@@ -19,9 +19,11 @@ $this->params['breadcrumbs'][] = 'Печать бланков';
     <?php
     
     foreach ($pat_groups as $group) {
-        echo Html::a($group[0][0]->surname.' - '.$group[0][count($group[0])-1]->surname,['//blanks/print','ids'=>$group[1]],['class'=>'btn btn-primary']);
+        echo Html::a($group[0][0]->surname.' - '.$group[0][count($group[0])-1]->surname,['//blanks/print','ids'=>$group[1]],['class'=>'btn btn-primary bottomspace']);
         echo ' ';
     }
     ?>
+    <br>
+    <?= Html::a('Общая печать бланков', ['//blanks/print','firm'=>$model->id], ['class' => 'btn btn-success']) ?>
 
 </div>

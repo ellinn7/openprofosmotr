@@ -5,7 +5,8 @@
     
     <div class="percent50 div-in-line to-cut-right to-cut-bottom h2w redline">
         <div class="undertext">Периодический осмотр</div>
-        <p>Орг.:<b><?=$model->firm?> <?=$model->dep?></b></p>
+        <div class="div-in-line percent50">Орг.:<b><?=$model->firm?> <?=$model->dep?></b></div>
+        <div class="div-in-line div-right percent50"><?=$firm?></div>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p class="text-center">АНАЛИЗ КРОВИ</p>
@@ -228,7 +229,7 @@
     
     <div class="percent50 div-in-line to-cut h2w">
         <div class="redline">
-            <div class="percent80 div-in-line"><b>МУЗ ГП №1 <br> ДДР</b></div>
+            <div class="percent80 div-in-line"><b><?=$firm?> <br> ДДР</b></div>
             <div class="percent20 div-in-line text-right"><?=$blood?></div>
             <p class="text-center">Биохимический анализ крови</p>
             <div class="percent100">
@@ -326,7 +327,7 @@
     <div class="percent50 div-in-line to-cut h25p redline">
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$reticul?></div>
-        <p>&nbsp;</p>
+        <p><?=$firm?></p>
         <p class="text-center"><b>Ретикулоциты</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
@@ -354,7 +355,7 @@
     <div class="percent50 div-in-line to-cut h25p redline">
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$syph?></div>
-        <p>&nbsp;</p>
+        <p><?=$firm?></p>
         <p class="text-center"><b>Исследование крови на сифилис</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
@@ -382,7 +383,7 @@
     <div class="percent50 div-in-line to-cut h25p redline">
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$nose?></div>
-        <p>&nbsp;</p>
+        <p><?=$firm?></p>
         <p class="text-center"><b>Мазок из зева и носа на наличие патогенного стафилококка</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
@@ -410,7 +411,7 @@
     <div class="percent50 div-in-line to-cut h25p redline">
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$paras?></div>
-        <p>&nbsp;</p>
+        <p><?=$firm?></p>
         <p class="text-center"><b>Анализ кала на яйца гельминтов и энтеробиоз</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
@@ -438,7 +439,7 @@
     <div class="percent50 div-in-line to-cut h25p redline">
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$honorea?></div>
-        <p>&nbsp;</p>
+        <p><?=$firm?></p>
         <p class="text-center"><b>Мазок на гонорею</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
@@ -466,7 +467,7 @@
     <div class="percent50 div-in-line to-cut h25p redline">
         <div class="percent80 div-in-line"><?=$model->firm?> <?=$model->dep?></div>
         <div class="percent20 div-in-line text-right"><?=$eritrocit?></div>
-        <p>&nbsp;</p>
+        <p><?=$firm?></p>
         <p class="text-center"><b>Базофильная зернистость эритроцитов</b></p>
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>

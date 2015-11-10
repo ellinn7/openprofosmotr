@@ -19,7 +19,7 @@ class Procedures extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return Yii::$app->user->identity->procedures;
+        return 'procedures';
     }
 
     /**
