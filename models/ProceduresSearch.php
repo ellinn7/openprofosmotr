@@ -59,9 +59,9 @@ class ProceduresSearch extends Procedures
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'place', $this->place])
-            ->andFilterWhere(['like', 'descr', $this->descr])
-            ->andFilterWhere(['like', 'procedure', $this->procedure]);
+        $query->andFilterWhere(['ilike', 'place', $this->place])
+            ->andFilterWhere(['ilike', 'descr', $this->descr])
+            ->andFilterWhere(['ilike', 'procedure', $this->procedure]);
 
         return $dataProvider;
     }

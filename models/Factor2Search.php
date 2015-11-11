@@ -60,9 +60,9 @@ class Factor2Search extends Factors2
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'period', $this->period]);
+        $query->andFilterWhere(['ilike', 'code', $this->code])
+            ->andFilterWhere(['ilike', 'name', $this->name])
+            ->andFilterWhere(['ilike', 'period', $this->period]);
 
         return $dataProvider;
     }

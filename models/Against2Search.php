@@ -61,8 +61,8 @@ class Against2Search extends Against2
             'optional' => $this->optional,
         ]);
 
-        $query->andFilterWhere(['like', 'factor_code', $this->factor_code])
-            ->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['ilike', 'factor_code', $this->factor_code])
+            ->andFilterWhere(['ilike', 'name', $this->name]);
 
         return $dataProvider;
     }

@@ -60,8 +60,8 @@ class FirmsSearch extends Firms
             'date' => $this->date,
         ]);
 
-        $query->andFilterWhere(['like', 'firm', $this->firm])
-            ->andFilterWhere(['like', 'file', $this->file]);
+        $query->andFilterWhere(['ilike', 'firm', $this->firm])
+            ->andFilterWhere(['ilike', 'file', $this->file]);
 
         return $dataProvider;
     }

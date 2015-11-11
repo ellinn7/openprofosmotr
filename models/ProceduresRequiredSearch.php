@@ -59,8 +59,8 @@ class ProceduresRequiredSearch extends ProceduresRequired
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'descr', $this->descr]);
+        $query->andFilterWhere(['ilike', 'name', $this->name]);
+        $query->andFilterWhere(['ilike', 'descr', $this->descr]);
 
         return $dataProvider;
     }

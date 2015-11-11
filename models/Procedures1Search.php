@@ -62,7 +62,7 @@ class Procedures1Search extends Procedures1
             'optional' => $this->optional,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['ilike', 'name', $this->name]);
 
         return $dataProvider;
     }

@@ -62,7 +62,7 @@ class Specialists1Search extends Specialists1
             'optional' => $this->optional,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['ilike', 'name', $this->name]);
 
         return $dataProvider;
     }

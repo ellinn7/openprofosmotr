@@ -59,9 +59,9 @@ class SpecialistsSearch extends Specialists
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'place', $this->place])
-            ->andFilterWhere(['like', 'descr', $this->descr])
-            ->andFilterWhere(['like', 'specialist', $this->specialist]);
+        $query->andFilterWhere(['ilike', 'place', $this->place])
+            ->andFilterWhere(['ilike', 'descr', $this->descr])
+            ->andFilterWhere(['ilike', 'specialist', $this->specialist]);
 
         return $dataProvider;
     }
