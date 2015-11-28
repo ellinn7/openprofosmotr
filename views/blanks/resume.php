@@ -3,7 +3,7 @@
 $this->title = 'Заключение периодического медицинского осмотра';
 ?>
 
-<div class="blank percent100">
+<div class="blank">
     <div class="h2t to-cut-right percent50 div-in-line">
         <h4 class="text-center"><?=$firm?></h4>
         <div>Код ОГРН &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1041800278706</div>
@@ -29,7 +29,7 @@ $this->title = 'Заключение периодического медицин
             </div>
         </div>
     </div>
-    <div class="percent50 div-in-line redline">
+    <div class="percent50 div-in-line div-right redline">
         <h4 class="text-center"><?=$firm?></h4>
         <div>Код ОГРН &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1041800278706</div>
         <h4 class="text-center">Заключение периодического медицинского осмотра</h4>

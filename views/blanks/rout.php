@@ -1,16 +1,16 @@
-<div class="blank percent100 h2t">
+<div class="blank h2t">
     <div class="h2t to-cut-right div-in-line percent50">
         <div class="div-in-line percent50">Орг.:<b><?=$model->firm?></b></div>
         <div class="div-in-line div-right percent50"><?=$firm?></div>
         <h4 class="text-center">Проф.маршрут</h4>
-        <p class="h4-blank"><b><?=$model->surname.' '.$model->name.' '.$model->patron?></b></p>
+        <div class="h4-blank"><b><?=$model->surname.' '.$model->name.' '.$model->patron?></b></div>
         <div class="percent50 div-in-line">
-            <p class="h4-blank">Спец-ть: <b><?=$model->spec?></b></p>
-            <p class="h4-blank">Отд.: <b><?=$model->dep?></b></p>
+            <div>Спец-ть: <b><?=$model->spec?></b></div>
+            <div>Отд.: <b><?=$model->dep?></b></div>
         </div>
         <div class="percent50 div-in-line">
-            <p class="h4-blank">Дата рожд.:<b><?=$model->birthday?></b></p>
-            <p class="h4-blank">Стаж.:<b><?=$model->seniority?></b></p>
+            <div>Дата рожд.:<b><?=$model->birthday?></b></div>
+            <div>Стаж.:<b><?=$model->seniority?></b></div>
         </div>
         <h4 class="text-center">Коды вредных производственных факторов и работ (пр. №302н от 12.04.2011)</h4>        
         <p>Приказ 302н, <?=$factors_str?>.</p>
@@ -22,7 +22,7 @@
             <?=$procedures_str?>
         </div>
     </div>
-    <div class="h2t percent50 to-cut-left div-in-line">
+    <div class="h2t percent50 div-in-line div-right">
         <h4 class="text-center">Противопоказания</h4>
         <div class="redline font70percent">- <?=$againsts_str?></div>
     </div>

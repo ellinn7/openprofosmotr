@@ -54,7 +54,7 @@
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Профессия/должность</div>
-            <div class="percent75 div-in-line bottomline text-center"><b><?=$model->passport_series?> &nbsp;</b></div>
+            <div class="percent75 div-in-line bottomline text-center"><b><?=$model->spec?> &nbsp;</b></div>
         </div>
         <div class="percent100 pspace">
             <div class="percent25 div-in-line">Контактный телефон</div>

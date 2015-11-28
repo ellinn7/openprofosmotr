@@ -19,7 +19,7 @@
             № 1338 1953 г.
         </div>
         <div class="text-center">КЛИНИЧЕСКИЙ АНАЛИЗ КРОВИ №______</div>
-        <div class="redline"> Ф.И.О.: <b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b> </div>
+        <div class="redline"> Ф.И.О.: <b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b>  Дата рождения: <b><?=$model->birthday?></b></div>
         <div class="percent100">
             <div class="percent15 div-in-line">В учреждение</div>
             <div class="percent25 div-in-line bottomline">&nbsp;</div>

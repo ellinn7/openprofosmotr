@@ -89,8 +89,10 @@ class Firms extends \yii\db\ActiveRecord
         $firm=new Firms();
         $firm->attributes=$data;
         $firm->date=date('d.m.Y H:i:s');
-        $firm->save();
-        return $firm->id;
+        if($firm->save()) {
+            return $firm->id;
+        }
+        return false;
     }
     
     /**

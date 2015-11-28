@@ -1,7 +1,7 @@
 <?php
 /* @var $this yii\web\View */    
 ?>
-<div class="blank percent100">
+<div class="blank">
     
     <div class="percent50 div-in-line to-cut-right to-cut-bottom h2w redline">
         <div class="undertext">Периодический осмотр</div>
@@ -13,6 +13,8 @@
         
         <div class="percent40 div-in-line">Фамилия, И., О.</div>
         <div class="percent60 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
+        <div class="percent40 div-in-line">Дата рождения</div>
+        <div class="percent60 div-in-line"><b><?=$model->birthday?></b></div>
         <div class="percent40 div-in-line">Отделение, палата:</div>
         <div class="percent60 div-in-line bottomline">&nbsp;</div>
                 
@@ -39,7 +41,7 @@
                 </tr>
             </tbody>
         </table>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <div class="text-center">
             "____"_________________________<?= date('Y')?> г.
         </div>
@@ -49,8 +51,7 @@
         <div class="text-center">
             Подпись <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
         </div>
-    </div>
-    
+    </div> 
     <div class="percent50 div-in-line to-cut-bottom h2w">
         <div class="redline">
             <div class="undertext">Периодический осмотр</div>
@@ -79,9 +80,7 @@
             
             <div class="percent100">
                 <div class="percent25 div-in-line font80percent">Фамилия, И.,О.</div>
-                <div class="percent50 div-in-line font80percent"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
-                <div class="percent20 div-in-line font80percent">Возраст</div>
-                <div class="percent5 div-in-line bottomline font80percent"><?=$model->age?></div>
+                <div class="percent75 div-in-line font80percent"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b>, <b><?=$model->birthday?></b></div>
             </div>
 
             <div class="percent100">
@@ -234,13 +233,17 @@
             <p class="text-center">Биохимический анализ крови</p>
             <div class="percent100">
                 <div class="percent20 div-in-line">Ф.И.О.</div>
-                <div class="percent80 div-in-line bottomline">&nbsp;</div>
+                <div class="percent80 div-in-line bottomline"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
+            </div>
+            <div class="percent100">
+                <div class="percent30 div-in-line">Дата рождения</div>
+                <div class="percent70 div-in-line bottomline"><b><?=$model->birthday?></b></div>
             </div>
             <div class="percent100">
                 <div class="percent30 div-in-line">Место работы</div>
-                <div class="percent70 div-in-line bottomline">&nbsp;</div>
+                <div class="percent70 div-in-line bottomline"><b><?=$model->firm?></b></div>
             </div>
-            <p>&nbsp;</p>
+            <br>
             <table class="common-table percent100">
                 <thead>
                     <tr>
@@ -332,11 +335,11 @@
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>
-        <div class="percent75 div-in-line text-center"><b><?=$model->birthday?></b></div>
+        <div class="percent75 div-in-line bottomline"><b><?=$model->birthday?></b></div>
         <div class="percent30 div-in-line">Адрес (прописка)</div>
-        <div class="percent70 div-in-line bottomline"><b><?=$model->addresse_reg?></b></div>
+        <div class="percent70 div-in-line bottomline"><b>&nbsp;<?=$model->addresse_reg?></b></div>
         <div class="percent25 div-in-line">Проживает</div>
-        <div class="percent75 div-in-line bottomline"><b><?=$model->addresse_fact?></b></div>
+        <div class="percent75 div-in-line bottomline">&nbsp;<b><?=$model->addresse_fact?></b></div>
         <div class="percent20 div-in-line">Дата</div>
         <div class="percent30 div-in-line bottomline">&nbsp;</div>
         <div class="percent20 div-in-line">№</div>
@@ -360,7 +363,7 @@
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>
-        <div class="percent75 div-in-line text-center"><b><?=$model->birthday?></b></div>
+        <div class="percent75 div-in-line bottomline"><b><?=$model->birthday?></b></div>
         <div class="percent30 div-in-line">Адрес (прописка)</div>
         <div class="percent70 div-in-line bottomline"><b><?=$model->addresse_reg?></b></div>
         <div class="percent25 div-in-line">Проживает</div>
@@ -388,11 +391,11 @@
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>
-        <div class="percent75 div-in-line text-center"><b><?=$model->birthday?></b></div>
+        <div class="percent75 div-in-line bottomline"><b><?=$model->birthday?></b></div>
         <div class="percent30 div-in-line">Адрес (прописка)</div>
-        <div class="percent70 div-in-line bottomline"><b><?=$model->addresse_reg?></b></div>
+        <div class="percent70 div-in-line bottomline">&nbsp;<b><?=$model->addresse_reg?></b></div>
         <div class="percent25 div-in-line">Проживает</div>
-        <div class="percent75 div-in-line bottomline"><b><?=$model->addresse_fact?></b></div>
+        <div class="percent75 div-in-line bottomline">&nbsp;<b><?=$model->addresse_fact?></b></div>
         <div class="percent20 div-in-line">Дата</div>
         <div class="percent30 div-in-line bottomline">&nbsp;</div>
         <div class="percent20 div-in-line">№</div>
@@ -416,11 +419,11 @@
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>
-        <div class="percent75 div-in-line text-center"><b><?=$model->birthday?></b></div>
+        <div class="percent75 div-in-line bottomline"><b><?=$model->birthday?></b></div>
         <div class="percent30 div-in-line">Адрес (прописка)</div>
-        <div class="percent70 div-in-line bottomline"><b><?=$model->addresse_reg?></b></div>
+        <div class="percent70 div-in-line bottomline">&nbsp;<b><?=$model->addresse_reg?></b></div>
         <div class="percent25 div-in-line">Проживает</div>
-        <div class="percent75 div-in-line bottomline"><b><?=$model->addresse_fact?></b></div>
+        <div class="percent75 div-in-line bottomline">&nbsp;<b><?=$model->addresse_fact?></b></div>
         <div class="percent20 div-in-line">Дата</div>
         <div class="percent30 div-in-line bottomline">&nbsp;</div>
         <div class="percent20 div-in-line">№</div>
@@ -444,11 +447,11 @@
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>
-        <div class="percent75 div-in-line text-center"><b><?=$model->birthday?></b></div>
+        <div class="percent75 div-in-line bottomline"><b><?=$model->birthday?></b></div>
         <div class="percent30 div-in-line">Адрес (прописка)</div>
-        <div class="percent70 div-in-line bottomline"><b><?=$model->addresse_reg?></b></div>
+        <div class="percent70 div-in-line bottomline">&nbsp;<b><?=$model->addresse_reg?></b></div>
         <div class="percent25 div-in-line">Проживает</div>
-        <div class="percent75 div-in-line bottomline"><b><?=$model->addresse_fact?></b></div>
+        <div class="percent75 div-in-line bottomline">&nbsp;<b><?=$model->addresse_fact?></b></div>
         <div class="percent20 div-in-line">Дата</div>
         <div class="percent30 div-in-line bottomline">&nbsp;</div>
         <div class="percent20 div-in-line">№</div>
@@ -472,11 +475,11 @@
         <div class="percent25 div-in-line">Ф.И.О.</div>
         <div class="percent75 div-in-line"><b><?=$model->surname?> <?=$model->name?> <?=$model->patron?></b></div>
         <div class="percent25 div-in-line">Дата рождения</div>
-        <div class="percent75 div-in-line text-center"><b><?=$model->birthday?></b></div>
+        <div class="percent75 div-in-line bottomline"><b><?=$model->birthday?></b></div>
         <div class="percent30 div-in-line">Адрес (прописка)</div>
-        <div class="percent70 div-in-line bottomline"><b><?=$model->addresse_reg?></b></div>
+        <div class="percent70 div-in-line bottomline">&nbsp;<b><?=$model->addresse_reg?></b></div>
         <div class="percent25 div-in-line">Проживает</div>
-        <div class="percent75 div-in-line bottomline"><b><?=$model->addresse_fact?></b></div>
+        <div class="percent75 div-in-line bottomline">&nbsp;<b><?=$model->addresse_fact?></b></div>
         <div class="percent20 div-in-line">Дата</div>
         <div class="percent30 div-in-line bottomline">&nbsp;</div>
         <div class="percent20 div-in-line">№</div>

@@ -173,16 +173,22 @@ class Functions
         return 1;
     }
 
-    protected static function prepareData($filename)
+    protected static function prepareData($filename,$talon)
     {
         $data=self::loadFromXls($filename);
         if(!$data) {
             return 'Нет данных';
         }
+        $data_to_save=[]; $firm=''; $firm_id=false;
         foreach ($data as $i=>$row) {
             if($i==0) {
                 if(!isset($row[4])) {
                     return 'Не задано предприятие';
+                }
+                $firm=$row[4];
+                $firm_id=Firms::add(['firm'=>$firm,'file'=>$filename]);
+                if(!$firm_id) {
+                    return 'Не удалось сохранить! Попробуйте еще раз.';
                 }
                 continue;
             }
@@ -195,7 +201,6 @@ class Functions
                 return 'Не заданы пункты Приложений';
             }
             $new_row9=self::prepareFactors($row[9]);
-            $data[$i][9]=$new_row9;
             if($new_row9) {
                 $check_factors1=self::checkFactors1($new_row9);
                 if($check_factors1!=1) {
@@ -203,7 +208,6 @@ class Functions
                 }
             }
             $new_row10=self::prepareFactors($row[10]);
-            $data[$i][10]=$new_row10;
             if($new_row10) {
                 $check_factors2=self::checkFactors2($new_row10);
                 if($check_factors2!=1) {
@@ -213,53 +217,57 @@ class Functions
             foreach([1,7,11,12,13,14,15,16,17,18,19,20,21,22,23,24] as $column) {
                 if(!array_key_exists($column, $row)) {
                     $data[$i][$column]='';
+                } else {
+                    $data[$i][$column].='';
                 }
             }
-        }
-        return $data;
-    }
-    
-    protected static function saveData($data,$filename,$talon)
-    {
-        foreach ($data as $i=>$row) {
-            if($i==0) {
-                $firm=$row[4].'';
-                $firm_id=Firms::add(['firm'=>$firm,'file'=>$filename]);
-                continue;
-            }
-            $data_arr=[
+            $data_to_save[]=[
                 'firm'=>$firm,
-                'snils'=>$row[1].'',
-                'surname'=>$row[2].'',
-                'name'=>$row[3].'',
-                'patron'=>$row[4].'',
+                'snils'=>$row[1],
+                'surname'=>$row[2],
+                'name'=>$row[3],
+                'patron'=>$row[4],
                 'sex'=> self::defineSex($row[5]),
-                'spec'=>$row[6].'',
-                'phone'=>$row[7].'',
+                'spec'=>$row[6],
+                'phone'=>$row[7],
                 'birthday'=> self::formatDate($row[8]),
-                'factors1'=> $row[9].'',
-                'factors2'=> $row[10].'',
-                'seniority'=>$row[11].'',
-                'dep'=>$row[12].'',
-                'prof'=>$row[13].'',
-                'addresse_reg'=>$row[14].'',
-                'addresse_fact'=>$row[15].'',
-                'disability'=>$row[16].'',
-                'passport_series'=> self::toInt($row[17]).'',
-                'passport_number'=> self::toInt($row[18]).'',
+                'factors1'=> $new_row9,
+                'factors2'=> $new_row10,
+                'seniority'=>$row[11],
+                'dep'=>$row[12],
+                'prof'=>$row[13],
+                'addresse_reg'=>$row[14],
+                'addresse_fact'=>$row[15],
+                'disability'=>$row[16],
+                'passport_series'=> self::toInt($row[17]),
+                'passport_number'=> self::toInt($row[18]),
                 'passport_given_date'=> self::formatDate($row[19]),
-                'passport_given_who'=>$row[20].'',
-                'insurance_number'=>$row[21].'',
-                'insurance_company'=>$row[22].'',
-                'living_lpu'=>$row[23].'',
-                'descr'=>$row[24].'',
+                'passport_given_who'=>$row[20],
+                'insurance_number'=>$row[21],
+                'insurance_company'=>$row[22],
+                'living_lpu'=>$row[23],
+                'descr'=>$row[24],
                 'file'=>$filename,
                 'talon'=>$talon,
                 'firm_id'=>$firm_id,
             ];
-            Patients::add($data_arr);
         }
-        return $firm_id;
+        usort($data_to_save,function($row1,$row2) {
+            return $row1['surname'].$row1['name'].$row1['patron'].$row1['birthday']>$row2['surname'].$row2['name'].$row2['patron'].$row2['birthday'] ? 1 : 0;                
+        });
+        return $data_to_save;
+    }
+    /**
+     * 
+     * @param type $data
+     * @return type
+     */
+    protected static function saveData($data)
+    {
+        foreach ($data as $i=>$row) {
+            Patients::add($row);
+        }
+        return $data[0]['firm_id'];
     }
 
     /**
@@ -267,11 +275,11 @@ class Functions
      */
     public static function loadData($filename,$talon)
     {
-        $data=self::prepareData($filename);
+        $data=self::prepareData($filename,$talon);
         if(is_string($data)) {
             return $data;
         }
-        return self::saveData($data,$filename,$talon);
+        return self::saveData($data);
     }
     
 }

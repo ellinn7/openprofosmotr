@@ -41,8 +41,8 @@ class FirmsSearch extends Firms
      */
     public function search($params)
     {
-        $query = Firms::find();
-
+        $query = Firms::find()->orderBy('id desc');
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
