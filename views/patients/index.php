@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Печать бланков', ['//blanks/print','firm'=>$firm_id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Ввод пациента', ['//patients/create','firm_id'=>$firm_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Отчет', ['//blanks/statreport', 'firm' => $firm_id], ['class' => 'btn']) ?>
     </p>
 
     <?= GridView::widget([

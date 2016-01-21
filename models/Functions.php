@@ -13,8 +13,7 @@ use app\models\Firms;
  */
 class Functions
 {
-
-    /**
+   /**
      * formatted date from string
      * @param type $str
      * @return type
@@ -25,7 +24,6 @@ class Functions
         $date=new \DateTime($str);
         return $date->format('d.m.Y');
     }
-    
     /**
      * from string to int
      * @param string $str
@@ -39,7 +37,6 @@ class Functions
         }
         return null;
     }
-    
     /**
      * load data from specially prepared .xls
      * @return array
@@ -94,11 +91,14 @@ class Functions
         }
         return $list;
     }
-    
+    /**
+     * firm name from template 3
+     * @param string $filename
+     * @return array
+     */
     protected static function arrFirmRowFromTemplate3($filename)
     {
         $arr=[];
-        
         $firm_data=\PHPExcel_IOFactory::load($filename);
         $firm_data->setActiveSheetIndex(1);
         $firm_aSheet = $firm_data->getActiveSheet();
@@ -112,15 +112,14 @@ class Functions
             }
         }
     }
-
-        /**
+    /**
      * formatting sex field
      * @param type $str
      * @return string
      */
     public static function defineSex($str)
     {
-        if(preg_match('/м/ui',$str)) {
+        if(preg_match('/м/ui',$str)) { //потому что М в слове "женский" нет, а Ж в слове "мужской" 
             return 'м';
         }
         return 'ж';
@@ -141,27 +140,30 @@ class Functions
         }
         return $str;        
     }
-    
-    
-    public static function checkFactors1($factors_str)
+    /**
+     * check factors in file
+     * @param type $factors_str
+     * @return type
+     */
+    public static function checkFactors($factors_str,$pril)
     {
         $factors_arr=explode(',',$factors_str);
         foreach($factors_arr as $code) {
-            $factor=Factors1::find()->where(['code'=>$code])->one();
-            return self::checkFactor($factor,$code,1);
+            if($pril==1) {
+                $factor=Factors1::find()->where(['code'=>$code])->one();
+            } else {
+                $factor=Factors2::find()->where(['code'=>$code])->one();
+            }
+            return self::checkFactor($factor,$code,$pril);
         }
     }
-    
-    
-    public static function checkFactors2($factors_str)
-    {
-        $factors_arr=explode(',',$factors_str);
-        foreach($factors_arr as $code) {
-            $factor=Factors2::find()->where(['code'=>$code])->one();
-            return self::checkFactor($factor,$code,2);
-        }
-    }
-    
+    /**
+     * check factors in loaded file
+     * @param object $factor
+     * @param string $code
+     * @param int $pril
+     * @return int
+     */
     protected static function checkFactor($factor,$code,$pril)
     {
         if(!$factor) {
@@ -172,7 +174,12 @@ class Functions
         }
         return 1;
     }
-
+    /**
+     * preparing loaded data to save
+     * @param string $filename
+     * @param iont $talon
+     * @return array
+     */
     protected static function prepareData($filename,$talon)
     {
         $data=self::loadFromXls($filename);
@@ -202,14 +209,14 @@ class Functions
             }
             $new_row9=self::prepareFactors($row[9]);
             if($new_row9) {
-                $check_factors1=self::checkFactors1($new_row9);
+                $check_factors1=self::checkFactors($new_row9,1);
                 if($check_factors1!=1) {
                     return $check_factors1;
                 }
             }
             $new_row10=self::prepareFactors($row[10]);
             if($new_row10) {
-                $check_factors2=self::checkFactors2($new_row10);
+                $check_factors2=self::checkFactors($new_row10,2);
                 if($check_factors2!=1) {
                     return $check_factors2;
                 }
@@ -258,8 +265,8 @@ class Functions
         return $data_to_save;
     }
     /**
-     * 
-     * @param type $data
+     * save data
+     * @param array objects $data
      * @return type
      */
     protected static function saveData($data)
@@ -271,6 +278,7 @@ class Functions
     }
 
     /**
+     * load patients per firm data
      * @param string $filename
      */
     public static function loadData($filename,$talon)
@@ -280,6 +288,29 @@ class Functions
             return $data;
         }
         return self::saveData($data);
+    }
+    /**
+     * form statreport in excel
+     * @param string $title
+     * @param string $filename
+     * @param array objects $rows
+     */
+    public static function statreportExcel($title,$filename,$rows)
+    {
+        $phpExcelObject=new \PHPExcel;
+        $phpExcelObject->getActiveSheet()->setTitle($title);
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1','№')->setCellValue('B1','Процедура')->setCellValue('C1','Кол-во');
+        $cellnum=$num=1;
+        foreach($rows as $row) {
+            $cellnum++;
+            $phpExcelObject->setActiveSheetIndex(0)->
+                setCellValue('A'.$cellnum,$num)->
+                setCellValue('B'.$cellnum,$row[0])->
+                setCellValue('C'.$cellnum,$row[1]);
+            $num++;
+        }
+        $objWriter = \PHPExcel_IOFactory::createWriter($phpExcelObject,'OpenDocument');
+        $objWriter->save($filename);
     }
     
 }

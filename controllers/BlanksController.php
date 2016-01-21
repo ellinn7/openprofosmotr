@@ -31,7 +31,170 @@ class BlanksController extends Controller
      * public layout
      */
     public $layout='print';
+    /**
+     * report for Medcenter
+     * @param integer $firm
+     */
+    public function actionStatreport($firm)
+    {
+        $this->layout='main';
+        $results=[];
+        $firm_model=  \app\models\Firms::find()->where(['id'=>$firm])->one();
+        $patients=Patients::find()->where(['firm_id'=>$firm])->all();
+        if($patients) {
+            $results=$this->_reportStat($patients);
+        }
+        \app\models\Functions::statreportExcel('stat','report.ods',$results);
+        return $this->render(
+            'statreport',
+            [
+                'firm'=>$firm_model->firm,
+                'res'=>$this->statreportHtml($results),
+                'css'=>file_get_contents('../web/css/print.css')
+            ]
+        );
+    }
+    /**
+     * 
+     * @param type $results
+     * @return type
+     */
+    protected function statreportHtml($results)
+    {
+        $res='';
+        $num=0;
+        foreach($results as $result) {
+            ++$num;
+            $res.="<tr><td>$num</td><td>$result[0]</td><td>$result[1]</td><tr>";
+        }
+        return $res;
+    }
 
+
+    protected function _reportStat($models)
+    {
+        $specialists_all=$procedures_all=[];
+        foreach ($models as $model) {
+            $factor1_results=self::runFactors([],[],1,$model->factors1,$model->age,$model->sex);
+            $factor2_results=self::runFactors($factor1_results['specialists_arr'],$factor1_results['procedures_arr'],2,$model->factors2,$model->age,$model->sex,false,$factor1_results['analysis'],$factor1_results['blood']);
+            $specialists_all=array_merge($specialists_all,self::prepareSpecialists($factor2_results['specialists_arr'],$model->sex));
+            $procedures_all=array_merge($procedures_all,self::prepareProcedures($factor2_results['procedures_arr'],$model->sex,$model->age,$factor2_results['analysis'],$factor2_results['blood']));
+        }
+        return array_merge(self::groupArray($specialists_all),self::groupArray($procedures_all));
+    }
+    /** 
+     * @param array $array
+     * @return array
+     */
+    protected static function groupArray($array)
+    {
+        $result_array=[];
+        foreach($array as $el) {
+            if(!isset($result_array[$el])) {
+                $result_array[$el]=[$el,0];
+            }
+            $result_array[$el][1]++;
+        }
+        return $result_array;
+    }
+    
+    protected static function runFactors($specialists_arr,$procedures_arr,$factor_group,$factors,$age,$sex,$blanks=false,$analysis=[],$blood=[],$againsts_arr=[],$factors_arr=[])
+    {
+        $factors_array=explode(',',$factors);
+        foreach ($factors_array as $factor) {
+            $factor_model=Factors1::find()->where(['code'=>$factor])->one();
+            if(!$factor_model) {continue;}
+            $specialists_arr=self::addSpecialists($specialists_arr,$factor_model->id,$factor_group);
+            $procedures=self::addProcedures($procedures_arr,$factor_model->id,$factor_group,$age,$sex,$analysis,$blood);
+            $procedures_arr=$procedures['procedures_arr'];
+            $analysis=$procedures['analysis'];
+            $blood=$procedures['blood'];
+            if($blanks) {
+                $againsts_arr=self::addAgainsts($againsts_arr,1,$factor_model->id);
+                $factors_arr[]=$factor_model->code.' '.$factor_model->name;
+            }
+        }
+        return [
+            'specialists_arr'=>$specialists_arr,
+            'procedures_arr'=>$procedures_arr,
+            'blood'=>$blood,
+            'analysis'=>$analysis,
+            'againsts_arr'=>$againsts_arr,
+            'factors_arr'=>$factors_arr,
+            'factors_as_array'=>$factors_array,
+        ];
+    }
+
+    protected static function addSpecialists($specialists_arr,$factor,$factor_group)
+    {
+        if($factor_group==1) {
+            $specialists=Specialists1::find()->where(['factor'=>$factor])->andWhere("name not like '%*%'")->all();
+        } else {
+            $specialists=Specialists2::find()->where(['factor'=>$factor])->andWhere("name not like '%*%'")->all();
+        }
+        if($specialists) {
+            foreach($specialists as $specialist) {
+                $specialists_arr[]=$specialist->name;
+            }
+        }
+        return $specialists_arr;
+    }
+    
+    protected static function addAgainsts($againsts_arr,$factor_group,$factor)
+    {
+        if($factor_group==1) {
+            $againsts=Against1::find()->where(['factor'=>$factor])->all();
+        } else {
+            $againsts=Against2::find()->where(['factor'=>$factor])->all();
+        }
+        if($againsts) {
+            foreach($againsts as $against) {
+                $againsts_arr[]=$against->name;
+            }
+        }
+        return $againsts_arr;
+    }
+
+    protected static function addProcedures($procedures_arr,$factor,$factor_group,$age,$sex,$analysis=[],$blood=[])
+    {
+        if($factor_group==1) {
+            $procedures=Procedures1::find()->where(['factor'=>$factor])->andWhere("name not like '%*%'")->all();
+        } else {
+            $procedures=Procedures2::find()->where(['factor'=>$factor])->andWhere("name not like '%*%'")->all();
+        }
+        if($procedures) {
+            foreach($procedures as $procedure) {
+                if(self::filterProcedures($procedure->descr,$procedure->name,$sex,$age)) {
+                    continue;
+                }
+                if(preg_match('/анализ/ui',$procedure->name)) {
+                    $analysis[]=$procedure->name;
+                    continue;
+                }
+                if(in_array($procedure->name,['АСТ','АЛТ','Билирубин'])) {
+                    $blood[]=$procedure->name;
+                    continue;
+                }
+                $procedures_arr[]=$procedure->name;
+            }
+        }
+        return [
+            'procedures_arr'=>$procedures_arr,
+            'analysis'=>$analysis,
+            'blood'=>$blood
+        ];
+    }
+    
+    protected static function filterProcedures($descr,$name,$sex,$age)
+    {
+         if(((preg_match('/40/',$descr) && preg_match('/лет/ui',$descr) && preg_match('/старше/ui',$descr) && $age<40))
+            ||((preg_match('/40/',$descr) && preg_match('/лет/ui',$descr) && preg_match('/моложе/ui',$descr) && $age>=40))
+            ||((preg_match('/женщин/ui',$descr)||(preg_match('/гинеколог/ui',$name))) && $sex=='м')
+            ||(preg_match('/гоноре/ui',$name) && $sex=='ж')) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @param integer $id
@@ -49,12 +212,10 @@ class BlanksController extends Controller
         } else {
             return false;
         }
-        
         $models=Patients::find()->where($condition)->all();
         if(!$models) {
             return false;
         }
-        
         $this->_print($models);
         
     }
@@ -62,103 +223,21 @@ class BlanksController extends Controller
     protected function _print($models)
     {
         $files_to_print=[];
-        
         foreach ($models as $model) {
-            
-            $factors1_arr=$factors2_arr=$specialists_arr=$procedures_arr=$againsts_arr=$analysis=$blood=[];
-        
-            $factors1=explode(',',$model->factors1);
-            foreach ($factors1 as $factor) {
-                $factor_model=Factors1::find()->where(['code'=>$factor])->one();
-                if(!$factor_model) {continue;}
-                $factors1_arr[]=$factor_model->code.' '.$factor_model->name;
-                $specialists=Specialists1::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
-                if($specialists) {
-                    foreach($specialists as $specialist) {
-                        $specialists_arr[]=$specialist->name;
-                    }
-                }
-                $procedures=Procedures1::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
-                if($procedures) {
-                    foreach($procedures as $procedure) {
-                        if(((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/старше/ui',$procedure->descr) && $model->age<40))
-                        ||((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/моложе/ui',$procedure->descr) && $model->age>=40))
-                        ||((preg_match('/женщин/ui',$procedure->descr)||(preg_match('/гинеколог/ui',$procedure->name))) && $model->sex=='м')
-                        ||(preg_match('/гоноре/ui',$procedure->name) && $model->sex=='ж')) {
-                            continue;
-                        }
-                        if(in_array($procedure->name,['АСТ','АЛТ','Билирубин'])) {
-                            $blood[]=$procedure->name;
-                            continue;
-                        }
-                        if(preg_match('/анализ/ui',$procedure->name)) {
-                            $analysis[]=$procedure->name;
-                            continue;
-                        }
-                        $procedures_arr[]=$procedure->name;
-                    }
-                }
-                $againsts=Against1::find()->where(['factor'=>$factor_model->id])->all();
-                if($againsts) {
-                    foreach($againsts as $against) {
-                        $againsts_arr[]=$against->name;
-                    }
-                }
-            }
-
-            $factors2=explode(',',$model->factors2);
-            foreach ($factors2 as $factor) {
-                $factor_model=Factors2::find()->where(['code'=>$factor])->one();
-                if(!$factor_model) {continue;}
-                $factors2_arr[]=$factor_model->code.' '.$factor_model->name;
-                $specialists=Specialists2::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
-                if($specialists) {
-                    foreach($specialists as $specialist) {
-                        $specialists_arr[]=$specialist->name;
-                    }
-                }
-                $procedures=Procedures2::find()->where(['factor'=>$factor_model->id])->andWhere("name not like '%*%'")->all();
-                if($procedures) {
-                    foreach($procedures as $procedure) {
-                        if(((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/старше/ui',$procedure->descr) && $model->age<40))
-                        ||((preg_match('/40/',$procedure->descr) && preg_match('/лет/ui',$procedure->descr) && preg_match('/моложе/ui',$procedure->descr) && $model->age>=40))
-                        ||((preg_match('/женщин/ui',$procedure->descr)||(preg_match('/гинеколог/ui',$procedure->name))) && $model->sex=='м')
-                        ||(preg_match('/гоноре/ui',$procedure->name) && $model->sex=='ж')) {
-                            continue;
-                        }
-                        if(in_array($procedure->name,['АСТ','АЛТ','Билирубин'])) {
-                            $blood[]=$procedure->name;
-                            continue;
-                        }
-                        if(preg_match('/анализ/ui',$procedure->name)) {
-                            $analysis[]=$procedure->name;
-                            continue;
-                        }
-                        $procedures_arr[]=$procedure->name;
-                    }
-                }
-                $againsts=Against2::find()->where(['factor'=>$factor_model->id])->all();
-                if($againsts) {
-                    foreach($againsts as $against) {
-                        $againsts_arr[]=$against->name;
-                    }
-                }
-            }
-        
-            $factors1_arr=array_unique($factors1_arr);
-            $factors2_arr=array_unique($factors2_arr);
-            $specialists_arr=self::prepareSpecialists($specialists_arr,$model->sex);
-            $procedures_arr=self::prepareProcedures($procedures_arr,$model->sex,$model->age,['analysis'=>$analysis,'blood'=>$blood]);
-            $againsts_arr=array_unique($againsts_arr);
-            
+            $factors1_results=self::runFactors([],[],1,$model->factors1,$model->age,$model->sex,true);
+            $factors1_arr=array_unique($factors1_results['factors_arr']);
+            $factors2_results=self::runFactors($factors1_results['specialists_arr'],$factors1_results['procedures_arr'],2,$model->factors2,$model->age,$model->sex,true,$factors1_results['analysis'],$factors1_results['blood'],$factors1_results['againsts_arr']);
+            $factors2_arr=array_unique($factors2_results['factors_arr']);
+            $specialists_arr=self::prepareSpecialists($factors2_results['specialists_arr'],$model->sex);
+            $procedures_arr=self::prepareProcedures($factors2_results['procedures_arr'],$model->sex,$model->age,$factors2_results['analysis'],$factors2_results['blood']);
+            $againsts_arr=array_unique($factors2_results['againsts_arr']);
             $files_to_print[]=$this->rout($model,$specialists_arr,$procedures_arr,$againsts_arr);
             $files_to_print[]=$this->personal($model);
             $files_to_print[]=$this->passport($model,$factors1_arr,$factors2_arr,$specialists_arr,$procedures_arr);
             $files_to_print[]=$this->resume($model,$factors1_arr,$factors2_arr);
             $files_to_print[]=$this->bloodclinic_talon($model,$model->talon);
-            $files_to_print[]=$this->analysis($model,$factors1,$factors2);            
+            $files_to_print[]=$this->analysis($model,$factors1_results['factors_as_array'],$factors2_results['factors_as_array']);            
         }
-        
         $this->pdf($files_to_print);
     }
 
@@ -307,13 +386,13 @@ class BlanksController extends Controller
      * @param array $arr
      * @return array
      */
-    protected static function prepareSpecialists($arr,$sex)
+    protected static function prepareSpecialists($arr,$sex=false)
     {
         $records=SpecialistsRequired::find()->all();
         $ophtalmologist=false;
         $neurologist=false;
         foreach ($records as $record) {
-            if(preg_match('/женщин/ui',$record->descr) && $sex=='м' ||
+            if($sex && preg_match('/женщин/ui',$record->descr) && $sex=='м' ||
                     preg_match('/(нарколог|психиатр)/ui',$record->name)) {
                 continue;
             }
@@ -343,10 +422,8 @@ class BlanksController extends Controller
      * @param array $arr
      * @return array
      */
-    protected static function prepareProcedures($arr,$sex,$age,$add_arr)
+    protected static function prepareProcedures($arr,$sex,$age,$analysis=[],$blood=[])
     {
-        $analysis=$add_arr['analysis'];
-        $blood=$add_arr['blood'];
         $records=  ProceduresRequired::find()->all();
         foreach ($records as $record) {
             if( (preg_match('/женщин/ui',$record->descr) && $sex=='м')
@@ -357,17 +434,19 @@ class BlanksController extends Controller
                 $analysis[]=$record->name;
                 continue;
             }
-            $arr[]=$record->name;
             if(in_array($record->name,['АСТ','АЛТ','Билирубин'])) {
                 $blood[]=$record->name;
                 continue;
             }
+            $arr[]=$record->name;
         }
         $arr=array_unique($arr);
         sort($arr);
         $blood=array_unique($blood);
         $analysis=array_unique($analysis);
-        $arr[]=implode(', ',$blood);
+        if($blood) {
+            $arr[]=implode(', ',$blood);
+        }
         foreach($analysis as $analys) {
             $arr[]=$analys;
         }
@@ -419,8 +498,6 @@ class BlanksController extends Controller
         }
         return false;
     }
-
-
     /**
      * вызов ПДФ
      * @param array $pages
