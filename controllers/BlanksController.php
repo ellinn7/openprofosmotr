@@ -102,7 +102,11 @@ class BlanksController extends Controller
     {
         $factors_array=explode(',',$factors);
         foreach ($factors_array as $factor) {
-            $factor_model=Factors1::find()->where(['code'=>$factor])->one();
+            if($factor_group==1) {
+                $factor_model=Factors1::find()->where(['code'=>$factor])->one();
+            } else {
+                $factor_model=Factors2::find()->where(['code'=>$factor])->one();
+            }
             if(!$factor_model) {continue;}
             $specialists_arr=self::addSpecialists($specialists_arr,$factor_model->id,$factor_group);
             $procedures=self::addProcedures($procedures_arr,$factor_model->id,$factor_group,$age,$sex,$analysis,$blood);
