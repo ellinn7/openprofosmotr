@@ -229,31 +229,31 @@ class Functions
                 }
             }
             $data_to_save[]=[
-                'firm'=>$firm,
-                'snils'=>$row[1],
-                'surname'=>$row[2],
-                'name'=>$row[3],
-                'patron'=>$row[4],
+                'firm'=>$firm.'',
+                'snils'=>$row[1].'',
+                'surname'=>$row[2].'',
+                'name'=>$row[3].'',
+                'patron'=>$row[4].'',
                 'sex'=> self::defineSex($row[5]),
-                'spec'=>$row[6],
-                'phone'=>$row[7],
+                'spec'=>$row[6].'',
+                'phone'=>$row[7].'',
                 'birthday'=> self::formatDate($row[8]),
                 'factors1'=> $new_row9,
                 'factors2'=> $new_row10,
-                'seniority'=>$row[11],
-                'dep'=>$row[12],
-                'prof'=>$row[13],
-                'addresse_reg'=>$row[14],
-                'addresse_fact'=>$row[15],
-                'disability'=>$row[16],
+                'seniority'=>$row[11].'',
+                'dep'=>$row[12].'',
+                'prof'=>$row[13].'',
+                'addresse_reg'=>$row[14].'',
+                'addresse_fact'=>$row[15].'',
+                'disability'=>$row[16].'',
                 'passport_series'=> self::toInt($row[17]),
                 'passport_number'=> self::toInt($row[18]),
                 'passport_given_date'=> self::formatDate($row[19]),
-                'passport_given_who'=>$row[20],
-                'insurance_number'=>$row[21],
-                'insurance_company'=>$row[22],
-                'living_lpu'=>$row[23],
-                'descr'=>$row[24],
+                'passport_given_who'=>$row[20].'',
+                'insurance_number'=>$row[21].'',
+                'insurance_company'=>$row[22].'',
+                'living_lpu'=>$row[23].'',
+                'descr'=>$row[24].'',
                 'file'=>$filename,
                 'talon'=>$talon,
                 'firm_id'=>$firm_id,
@@ -272,7 +272,10 @@ class Functions
     protected static function saveData($data)
     {
         foreach ($data as $i=>$row) {
-            Patients::add($row);
+            $result=Patients::add($row);
+            if($result) {
+                return $result;
+            }
         }
         return $data[0]['firm_id'];
     }

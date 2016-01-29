@@ -115,7 +115,15 @@ class Patients extends \yii\db\ActiveRecord
     {
         $patient = new Patients();
         $patient->attributes=$data;
-        $patient->save();
+        if($patient->save()) {
+            return false;
+        }
+        $patient_errors=[];
+        foreach ($patient->errors as $error) {
+            $patient_errors[]=implode(', ',$error);
+        }
+        $errors=implode('<br> ',$patient_errors);
+        return 'При сохранении пациента '.$patient->surname.' '.$patient->name.' '.$patient->patron.' возникли ошибки: '.$errors;
     }
     
     /**
