@@ -6,6 +6,7 @@ use Yii;
 use app\models\Specialists2;
 use app\models\Procedures2;
 use app\models\Against2;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "factors2".
@@ -87,9 +88,10 @@ class Factors2 extends \yii\db\ActiveRecord
         $arr=[];
         if($this->specialists) {
             foreach($this->specialists as $specialist) {
-                $arr[]=$specialist->name;
+                $arr[]=Html::a($specialist->name,['specialists2/view','id'=>$specialist->id]);
             }
         }
+        $arr[]=Html::a('+',['specialists2/create','factor'=>$this->id,'factor_code'=>$this->code]);
         return implode('<br>',$arr);
     }
     
@@ -101,9 +103,10 @@ class Factors2 extends \yii\db\ActiveRecord
         $arr=[];
         if($this->procedures) {
             foreach($this->procedures as $procedure) {
-                $arr[]=$procedure->name;
+                $arr[]= Html::a($procedure->name,['procedures2/view','id'=>$procedure->id]);
             }
         }
+        $arr[]=Html::a('+',['procedures2/create','factor'=>$this->id,'factor_code'=>$this->code]);
         return implode('<br>',$arr);
     }
     
@@ -115,9 +118,10 @@ class Factors2 extends \yii\db\ActiveRecord
         $arr=[];
         if($this->againsts) {
             foreach ($this->againsts as $against) {
-                $arr[]=$against->name;
+                $arr[]= Html::a($against->name,['against2/view','id'=>$against->id]);
             }
         }
+        $arr[]=Html::a('+',['against2/create','factor'=>$this->id,'factor_code'=>$this->code]);
         return implode('<br>',$arr);
     }
 }

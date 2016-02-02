@@ -6,13 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Procedures2 */
 
-$this->title = 'Create Procedures2';
-$this->params['breadcrumbs'][] = ['label' => 'Procedures2s', 'url' => ['index']];
+$this->title = 'Новая процедура';
+$this->params['breadcrumbs'][] = ['label' => $model->factor_code, 'url' => ['factors2/view','id'=>$model->factor]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="procedures2-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

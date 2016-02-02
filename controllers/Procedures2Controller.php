@@ -78,12 +78,13 @@ class Procedures2Controller extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($factor,$factor_code)
     {
         $model = new Procedures2();
-
+        $model->factor=$factor;
+        $model->factor_code=$factor_code;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['factors2/view','id'=>$model->factor]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -118,9 +119,10 @@ class Procedures2Controller extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model=  $this->findModel($id);
+        $factor=$model->factor;
+        $model->delete();
+        return $this->redirect(['factors2/view','id'=>$factor]);
     }
 
     /**

@@ -16,6 +16,15 @@ use app\models\Factors1;
  */
 class Against1 extends \yii\db\ActiveRecord
 {
+    public function beforeValidate()
+    {
+        if(preg_match('/\*/',$this->name)) {
+            $this->optional=1;
+        } else {
+            $this->optional=0;
+        }
+        return parent::beforeValidate();
+    }
     /**
      * @inheritdoc
      */
@@ -44,7 +53,7 @@ class Against1 extends \yii\db\ActiveRecord
             'factor' => 'Factor',
             'id' => 'ID',
             'factor_code' => 'Factor Code',
-            'name' => 'Name',
+            'name' => 'Противопоказание',
             'optional' => 'Optional',
         ];
     }

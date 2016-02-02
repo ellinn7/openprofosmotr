@@ -1,7 +1,6 @@
 <?php
 /**
  * Печать бланков
- * 
  * @author Elena Zorina
  */
 
