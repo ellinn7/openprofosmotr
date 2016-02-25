@@ -21,6 +21,16 @@ class Functions
     public static function formatDate($str)
     {
         $str=  preg_replace('/[^0-9.]/ui','',$str);
+        if(!preg_match('/./',$str)) {
+            if(strlen($str)==6) {
+                $str=substr($str,0,2).'.'.substr($str,2,2).'.20'.substr($str,4,2);
+            } elseif(strlen($str)==8) {
+                $str=substr($str,0,2).'.'.substr($str,2,2).'.'.substr($str,4,4);
+            }
+            else {
+                return false;
+            }
+        }
         $date=new \DateTime($str);
         return $date->format('d.m.Y');
     }
@@ -119,7 +129,7 @@ class Functions
      */
     public static function defineSex($str)
     {
-        if(preg_match('/м/ui',$str)) { //потому что М в слове "женский" нет, а Ж в слове "мужской" 
+        if(preg_match('/м/ui',$str)) { //потому что М в слове "женский" нет, а Ж в слове "мужской" есть
             return 'м';
         }
         return 'ж';
@@ -132,13 +142,16 @@ class Functions
      */
     public static function prepareFactors($factors_str)
     {
-        $str=preg_replace('/;/u',',',$factors_str);
-        $str=preg_replace('/ /u','',$str);
-        $str=preg_replace('/([0-9]),/','$1.,',$str);        
-        if($str&&!preg_match('/\.$/',$str)) {
-            $str.='.';
+        $factors_str=preg_replace('/ /u','',$factors_str);
+        if($factors_str) {
+            if(!preg_match('/\.$/',$factors_str)) {
+                $factors_str=$factors_str.'.';
+            }
+            $factors_str=preg_replace('/;/u',',',$factors_str);
+            $factors_str=preg_replace('/([0-9]),/','$1.,',$factors_str);
+            $factors_str=preg_replace('/[^0-9.,]/u','',$factors_str);
         }
-        return $str;        
+        return $factors_str;        
     }
     /**
      * check factors in file
@@ -167,10 +180,10 @@ class Functions
     protected static function checkFactor($factor,$code,$pril)
     {
         if(!$factor) {
-            return "Код $code Приложения $pril отсутствует в приказе!";
+            return "Код '{$code}' Приложения $pril отсутствует в приказе!";
         }
         if(!$factor->specialists&&!$factor->procedures) {
-            return "Код $code Приложения $pril не является подпунктом!";
+            return "Код '{$code}' Приложения $pril не является подпунктом!";
         }
         return 1;
     }
@@ -201,24 +214,24 @@ class Functions
             }
             foreach([2,3,4,5,6,8] as $column) {
                 if(!isset($row[$column])) {
-                    return 'Не заданы основные атрибуты: Фамилия, Имя, Отчество, Пол, Специальность, Дата Рождения';
+                    return 'Не заданы основные атрибуты: Фамилия, Имя, Отчество, Пол, Специальность, Дата Рождения у пациента '.$row[2].' '.$row[3].' '.$row[4];
                 }
             }
             if(!isset($row[9]) && !isset($row[10])) {
-                return 'Не заданы пункты Приложений';
+                return 'Не заданы пункты Приложений у пациента '.$row[2].' '.$row[3].' '.$row[4];
             }
             $new_row9=self::prepareFactors($row[9]);
             if($new_row9) {
                 $check_factors1=self::checkFactors($new_row9,1);
                 if($check_factors1!=1) {
-                    return $check_factors1;
+                    return $check_factors1.' у пациента '.$row[2].' '.$row[3].' '.$row[4];
                 }
             }
             $new_row10=self::prepareFactors($row[10]);
             if($new_row10) {
                 $check_factors2=self::checkFactors($new_row10,2);
                 if($check_factors2!=1) {
-                    return $check_factors2;
+                    return $check_factors2.' у пациента '.$row[2].' '.$row[3].' '.$row[4];
                 }
             }
             foreach([1,7,11,12,13,14,15,16,17,18,19,20,21,22,23,24] as $column) {
@@ -227,6 +240,10 @@ class Functions
                 } else {
                     $data[$i][$column].='';
                 }
+            }
+            $birthday=self::formatDate($row[8]);
+            if(!$birthday) {
+                return 'Неправильно указана дата рождения у пациента '.$row[2].' '.$row[3].' '.$row[4];
             }
             $data_to_save[]=[
                 'firm'=>$firm.'',
@@ -248,7 +265,7 @@ class Functions
                 'disability'=>$row[16].'',
                 'passport_series'=> self::toInt($row[17]),
                 'passport_number'=> self::toInt($row[18]),
-                'passport_given_date'=> self::formatDate($row[19]),
+                'passport_given_date'=> self::formatDate($row[19]).'',
                 'passport_given_who'=>$row[20].'',
                 'insurance_number'=>$row[21].'',
                 'insurance_company'=>$row[22].'',
